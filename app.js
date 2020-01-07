@@ -6,6 +6,8 @@ const router = require('express').Router();
 
 // importo los controladores
 const cUsuario = require('./controllers/usuario');
+const cPerfilLaboral = require('./controllers/perfilLaboral');
+const cSearch = require('./controllers/search');
 // const cError = require('./controllers/error');
 // const cMovilUsuario = require('./controllers/movilusuario');
 // const cControlVersion = require('./controllers/controlVersion');
@@ -25,6 +27,10 @@ router.get('/test', function (req, res) {
 
 router.post('/usuario/registro', cUsuario.registro);
 router.post('/usuario/login', cUsuario.login);
+router.post('/perfil-laboral', cPerfilLaboral.registro);
+router.put('/perfil-laboral/activar', cPerfilLaboral.activar);
+router.put('/perfil-laboral/desactivar', cPerfilLaboral.desactivar);
+router.post('/search/servicios', cSearch.getServicios);
 // router.post('/error', cError.insert);
 // router.post('/movilusuario', cMovilUsuario.insert);
 
