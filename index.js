@@ -4,8 +4,8 @@ const http = require("./app");
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'trabajo'
+    password: 'ulnpde2008',
+    database: 'tesis'
 });
 
 db.connect(function(err) {
