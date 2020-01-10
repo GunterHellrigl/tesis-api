@@ -5,13 +5,20 @@ exports.getServicios = (req, res) => {
     console.log("------- Search - getServicios --------");
     console.log('');
 
-    console.log(req);
-
     let query = (req.body.query || '').trim();
 
     console.log('query: ', query);
+    
+    
+    let words = query.split(' ');
+    query = "";
+    words.forEach(word => {
+        query += word + '* ';
+    });
 
-    db.query('call searchServicios(?, ?, ?, ?)', [query, 0, 0, 0], function (error, results) {
+    console.log('query: ', query);
+
+    db.query('call searchProveedoresServicio(?)', [query], function (error, results) {
         if (error != null) {
             console.log('Error: ', error);
             return res.status(500).send({error});
