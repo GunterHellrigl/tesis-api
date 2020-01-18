@@ -44,7 +44,9 @@ exports.login = (req, res) => {
                 apellido: results[0][0].apellido,
                 nombre: results[0][0].nombre,
                 email: results[0][0].email,
-                telefono: results[0][0].telefono
+                telefono: results[0][0].telefono,
+                reputacion: results[0][0].reputacion,
+                activo: (results[0][0].activo == 1) ? true : false,
             }
         });
     });
@@ -111,22 +113,24 @@ exports.registro = (req, res) => {
         }
 
         if (!results[0][0].ok) {
-            
+
             return res.status(200).send({
                 ok: false,
                 message: results[0][0].message
             });
         }
-        
+
         return res.status(201).send({
             ok: true,
             usuario: {
-		        id: results[0][0].id,
+		            id: results[0][0].id,
                 username,
                 apellido,
                 nombre,
                 email,
-                telefono
+                telefono,
+                activo: true,
+                reputacion: 0
             }
         });
     });

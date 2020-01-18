@@ -30,7 +30,8 @@ router.post('/usuario/login', cUsuario.login);
 router.post('/perfil-laboral', cPerfilLaboral.registro);
 router.put('/perfil-laboral/activar', cPerfilLaboral.activar);
 router.put('/perfil-laboral/desactivar', cPerfilLaboral.desactivar);
-router.post('/search/servicios', cSearch.getServicios);
+router.post('/search/profesionales', cSearch.getProfesionales);
+router.post('/search/trabajos', cSearch.getTrabajos);
 // router.post('/error', cError.insert);
 // router.post('/movilusuario', cMovilUsuario.insert);
 
