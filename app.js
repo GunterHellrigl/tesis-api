@@ -8,6 +8,8 @@ const router = require('express').Router();
 const cUsuario = require('./controllers/usuario');
 const cPerfilLaboral = require('./controllers/perfilLaboral');
 const cSearch = require('./controllers/search');
+const cTrabajo = require('./controllers/trabajo');
+const cProfesion = require('./controllers/profesion');
 // const cError = require('./controllers/error');
 // const cMovilUsuario = require('./controllers/movilusuario');
 // const cControlVersion = require('./controllers/controlVersion');
@@ -32,14 +34,11 @@ router.put('/perfil-laboral/activar', cPerfilLaboral.activar);
 router.put('/perfil-laboral/desactivar', cPerfilLaboral.desactivar);
 router.post('/search/profesionales', cSearch.getProfesionales);
 router.post('/search/trabajos', cSearch.getTrabajos);
-// router.post('/error', cError.insert);
-// router.post('/movilusuario', cMovilUsuario.insert);
+router.get('/perfil-profesional/:id', cPerfilLaboral.getPerfilProfesional);
 
-// router.get('/controlversion/check/:id(\\d+)', cControlVersion.checkVersion);
-// router.get('/controlversionregistro/:versionid(\\d+)', cControlVersionRegistro.getRegistros);
-// router.post('/controlversionlog', cControlVersionLog.insert);
-// router.get('/censo/dni/:dni', cCenso.getByDni);
-// router.get('/censo/censado/:fecha', cCenso.getCensados);
-// router.post('/censoregistro', cCensoRegistro.insert);
+router.post('/trabajo', cTrabajo.insert);
+router.get('/trabajos', cTrabajo.getTrabajos);
+
+router.get('/profesiones', cProfesion.getProfesiones);
 
 module.exports = http;
