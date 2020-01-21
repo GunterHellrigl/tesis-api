@@ -28,9 +28,24 @@ exports.getProfesionales = (req, res) => {
             console.log('Results: ', results);
         }
 
+        let usuarios = new Array();
+
+        for (var i = 0; i < results[0].length; i++) {
+            usuarios[i] = {
+                id: results[0][i].id,
+                username: results[0][i].username,
+                apellido: results[0][i].apellido,
+                nombre: results[0][i].nombre,
+                reputacion: results[0][i].reputacion,
+                perfilProfesional: {
+                    profesiones: results[0][i].profesiones
+                }
+            }
+        }
+
         return res.status(200).send({
             ok: true,
-            usuarios: results[0]
+            usuarios: usuarios
         });
     });
 }
