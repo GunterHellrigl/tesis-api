@@ -26,8 +26,8 @@ exports.registro = (req, res) => {
         message: "profesiones está vacío"
     });
 
-    
-    
+
+
 
     db.query('call perfilLaboralRegistro(?, ?, ?)', [usuarioId, cono_habi, profesiones], function (error, results) {
         if (error != null) {
@@ -40,13 +40,13 @@ exports.registro = (req, res) => {
         }
 
         if (!results[0][0].ok) {
-            
+
             return res.status(400).send({
                 ok: false,
                 message: results[0][0].message
             });
         }
-        
+
         return res.status(201).send({
             ok: true
         });
@@ -118,13 +118,13 @@ exports.activar = (req, res) => {
         }
 
         if (!results[0][0].ok) {
-            
+
             return res.status(400).send({
                 ok: false,
                 message: results[0][0].message
             });
         }
-        
+
         return res.status(201).send({
             ok: true,
             usuario: {
@@ -136,4 +136,47 @@ exports.activar = (req, res) => {
             }
         });
     });
+};
+
+exports.getPerfilProfesional = (req, res) => {
+  console.log('');
+  console.log("------- Perfil Profesional - Get --------");
+  console.log('');
+
+  let id = (req.params.id || '').trim();
+
+  db.query('call getPerfilProfesional(?)', [id], (error, results) => {
+      if (error != null) {
+          console.log('Error: ', error);
+          return res.status(500).send({error});
+      }
+
+      if (results != null) {
+          console.log('Results: ', results);
+        console.log(results[0].length);
+          if (results[0].length == 0) return res.status(200).send({
+             ok: false,
+             message: 'Perfil incorrecto'
+          });
+
+          return res.status(200).send({
+             ok: true,
+             usuario: {
+                 id: results[0][0].id,
+                 username: results[0][0].username,
+                 apellido: results[0][0].apellido,
+                 nombre: results[0][0].nombre,
+                 email: results[0][0].email,
+                 telefono: results[0][0].telefono,
+                 reputacion: results[0][0].reputacion,
+                 perfilProfesional: {
+                     id: results[0][0].ppId,
+                     usuarioId: results[0][0].id,
+                     conoHabi: results[0][0].cono_habi,
+                     profesiones: results[0][0].profesiones
+                 }
+             }
+          });
+      }
+  });
 };
