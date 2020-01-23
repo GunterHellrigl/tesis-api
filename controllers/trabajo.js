@@ -99,3 +99,51 @@ exports.getTrabajos = (req, res) => {
         }
     });
 };
+
+exports.getTrabajo = (req, res) => {
+    console.log('');
+    console.log("------- Trabajo - GetTrabajo --------");
+    console.log('');
+
+    let id = (req.params.id || '').trim();
+
+    db.query('call getTrabajo(?)', [id], function (error, results) {
+        if (error != null) {
+            console.log('Error: ', error);
+            return res.status(500).send({error});
+        }
+
+        if (results != null) {
+            console.log('Results: ', results);
+
+            if (results[0].length == 0) return res.status(200).send({
+               ok: false,
+               message: 'Trabajo erroneo'
+            });
+
+            return res.status(200).send({
+               ok: true,
+               trabajo: {
+                   id: results[0][0].id,
+                   titulo: results[0][0].titulo,
+                   profesiones: results[0][0].profesiones,
+                   preciodesde: results[0][0].preciodesde,
+                   preciohasta: results[0][0].preciohasta,
+                   dsc: results[0][0].dsc,
+                   cantidadpropuestas: results[0][0].cantidadpropuestas,
+                   fechahorapublicacion: results[0][0].fechahorapublicacion
+               },
+               usuario: {
+                   id: results[0][0].usuarioid,
+                   apellido: results[0][0].apellido,
+                   nombre: results[0][0].nombre,
+                   reputacion: results[0][0].reputacion
+               }
+            });
+        } else {
+            return res.status(200).send({
+                ok: false
+            });
+        }
+    });
+};

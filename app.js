@@ -38,6 +38,7 @@ router.get('/perfil-profesional/:id', cPerfilLaboral.getPerfilProfesional);
 
 router.post('/trabajo', cTrabajo.insert);
 router.get('/trabajos', cTrabajo.getTrabajos);
+router.get('/trabajos/:id', cTrabajo.getTrabajo);
 
 router.get('/profesiones', cProfesion.getProfesiones);
 
