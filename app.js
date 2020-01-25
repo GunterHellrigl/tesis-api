@@ -23,6 +23,8 @@ router.get('/test', function (req, res) {
 
 router.post('/usuario/registro', cUsuario.registro);
 router.post('/usuario/login', cUsuario.login);
+router.put('/usuario', cUsuario.updateUsuario);
+router.get('/usuarios/:usuarioId', cUsuario.getUsuario);
 
 router.post('/perfil-laboral', cPerfilLaboral.registro);
 router.put('/perfil-laboral/activar', cPerfilLaboral.activar);
