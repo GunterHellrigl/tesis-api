@@ -36,7 +36,9 @@ router.post('/search/trabajos', cSearch.getTrabajos);
 
 router.post('/trabajo', cTrabajo.insert);
 router.get('/trabajos', cTrabajo.getTrabajos);
-router.get('/trabajos/:id', cTrabajo.getTrabajo);
+router.get('/trabajo/:id', cTrabajo.getTrabajo);
+router.get('/trabajos/:usuarioId', cTrabajo.getMisTrabajos);
+router.get('/trabajos/:usuarioId/:trabajoId', cTrabajo.getMiTrabajo);
 
 router.post('/propuesta', cPropuesta.insert);
 router.put('/propuesta', cPropuesta.update);
