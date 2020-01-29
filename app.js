@@ -35,6 +35,8 @@ router.post('/search/profesionales', cSearch.getProfesionales);
 router.post('/search/trabajos', cSearch.getTrabajos);
 
 router.post('/trabajo', cTrabajo.insert);
+router.put('/trabajo', cTrabajo.update);
+router.put('/trabajo/cancelar', cTrabajo.delete);
 router.get('/trabajos', cTrabajo.getTrabajos);
 router.get('/trabajo/:id', cTrabajo.getTrabajo);
 router.get('/trabajos/:usuarioId', cTrabajo.getMisTrabajos);

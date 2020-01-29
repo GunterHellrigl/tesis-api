@@ -1,4 +1,4 @@
-const v = require('validator');
+﻿const v = require('validator');
 
 exports.insert = (req, res) => {
     console.log('');
@@ -45,6 +45,110 @@ exports.insert = (req, res) => {
 
     db.query('call insertTrabajo(?,?,?,?,?,?)',
         [usuarioId, titulo, profesiones, dsc, precioDesde, precioHasta], (error, results) => {
+            if (error != null) {
+                console.log('Error: ', error);
+                return res.status(500).send({error});
+            }
+
+            if (results != null) {
+                console.log('Results: ', results[0]);
+
+                return res.status(200).send({
+                    ok: true
+                });
+
+            } else {
+                return res.status(200).send({
+                    ok: false,
+                    message: 'Error'
+                });
+            }
+    });
+};
+
+exports.update = (req, res) => {
+    console.log('');
+    console.log("------- Trabajo - Update --------");
+    console.log('');
+
+    let trabajoId = (req.body.trabajoId || '').trim();
+    let titulo = (req.body.titulo || '').trim();
+    let profesiones = (req.body.profesiones || '').trim();
+    let precioDesde = (req.body.precioDesde || '').trim();
+    let precioHasta = (req.body.precioHasta || '').trim();
+    let dsc = (req.body.dsc || '').trim();
+
+    if (v.isEmpty(trabajoId)) return res.status(400).send({
+        ok: false,
+        message: "trabajoId está vacío"
+    });
+    if (!v.isInt(trabajoId, {min:1})) return res.status(400).send({
+        ok: false,
+        message: 'trabajoId con formato incorrecto'
+    });
+
+    if (v.isEmpty(titulo)) return res.status(400).send({
+        ok: false,
+        message: "titulo está vacío"
+    });
+
+    if (v.isEmpty(profesiones)) return res.status(400).send({
+        ok: false,
+        message: "profesiones está vacío"
+    });
+
+    if (!v.isDecimal(precioDesde)) return res.status(400).send({
+        ok: false,
+        message: "precioDesde con formato incorrecto"
+    });
+
+    if (!v.isDecimal(precioHasta)) return res.status(400).send({
+        ok: false,
+        message: "precioHasta con formato incorrecto"
+    });
+
+
+
+    db.query('call updateTrabajo(?,?,?,?,?,?)',
+        [trabajoId, titulo, profesiones, precioDesde, precioHasta, dsc], (error, results) => {
+            if (error != null) {
+                console.log('Error: ', error);
+                return res.status(500).send({error});
+            }
+
+            if (results != null) {
+                console.log('Results: ', results[0]);
+
+                return res.status(200).send({
+                    ok: true
+                });
+
+            } else {
+                return res.status(200).send({
+                    ok: false,
+                    message: 'Error'
+                });
+            }
+    });
+};
+
+exports.delete = (req, res) => {
+    console.log('');
+    console.log("------- Trabajo - Delete --------");
+    console.log('');
+
+    let trabajoId = (req.body.trabajoId || '').trim();
+
+    if (v.isEmpty(trabajoId)) return res.status(400).send({
+        ok: false,
+        message: "trabajoId está vacío"
+    });
+    if (!v.isInt(trabajoId, {min:1})) return res.status(400).send({
+        ok: false,
+        message: 'trabajoId con formato incorrecto'
+    });
+
+    db.query('call deleteTrabajo(?)', [trabajoId], (error, results) => {
             if (error != null) {
                 console.log('Error: ', error);
                 return res.status(500).send({error});
@@ -211,7 +315,7 @@ exports.getMiTrabajo = (req, res) => {
         message: 'trabajoId con formato incorrecto'
     });
 
-    db.query('call getMiTrabajo(?)', [usuarioId], function (error, results) {
+    db.query('call getMiTrabajo(?)', [trabajoId], function (error, results) {
         if (error != null) {
             console.log('Error: ', error);
             return res.status(500).send({error});
