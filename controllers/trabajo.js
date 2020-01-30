@@ -176,6 +176,20 @@ exports.getTrabajos = (req, res) => {
     console.log('');
 
     let query = (req.query.query || '').trim();
+    let usuarioId = (req.query.usuarioId || '').trim();
+
+    if (v.isEmpty(query)) return res.status(400).send({
+        ok: false,
+        message: "query está vacío"
+    });
+    if (v.isEmpty(usuarioId)) return res.status(400).send({
+        ok: false,
+        message: "usuarioId está vacío"
+    });
+    if (!v.isInt(usuarioId, {min:1})) return res.status(400).send({
+        ok: false,
+        message: 'usuarioId con formato incorrecto'
+    });
 
     let words = query.split(' ');
     query = "";
@@ -183,7 +197,7 @@ exports.getTrabajos = (req, res) => {
         query += word + '* ';
     });
 
-    db.query('call getTrabajos(?)', [query], function (error, results) {
+    db.query('call getTrabajos(?, ?)', [query, usuarioId], function (error, results) {
         if (error != null) {
             console.log('Error: ', error);
             return res.status(500).send({error});
