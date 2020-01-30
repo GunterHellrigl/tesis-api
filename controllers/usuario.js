@@ -256,15 +256,17 @@ exports.updateUsuario = (req, res) => {
         message: "ppActivo está vacío"
     });
 
-    if (v.isEmpty(ppProfesiones)) return res.status(200).send({
-        ok: false,
-        message: "ppProfesiones está vacío"
-    });
+    if (ppActivo == true) {
+        if (v.isEmpty(ppProfesiones)) return res.status(200).send({
+            ok: false,
+            message: "ppProfesiones está vacío"
+        });
 
-    if (v.isEmpty(ppConoHabi)) return res.status(200).send({
-        ok: false,
-        message: "ppConoHabi está vacío"
-    });
+        if (v.isEmpty(ppConoHabi)) return res.status(200).send({
+            ok: false,
+            message: "ppConoHabi está vacío"
+        });
+    }
 
     console.log('Todo correcto');
 
