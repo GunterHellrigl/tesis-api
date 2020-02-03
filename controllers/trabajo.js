@@ -267,6 +267,81 @@ exports.getTrabajo = (req, res) => {
     });
 };
 
+exports.getTrabajoConPropuesta = (req, res) => {
+    console.log('');
+    console.log("------- Trabajo - getTrabajoConPropuesta --------");
+    console.log('');
+
+    let trabajoId = (req.params.trabajoId || '').trim();
+    let usuarioId = (req.params.profesionalId || '').trim();
+
+    if (v.isEmpty(trabajoId)) return res.status(400).send({
+        ok: false,
+        message: "trabajoId está vacío"
+    });
+    if (!v.isInt(trabajoId, {min:1})) return res.status(400).send({
+        ok: false,
+        message: 'trabajoId con formato incorrecto'
+    });
+
+    if (v.isEmpty(usuarioId)) return res.status(400).send({
+        ok: false,
+        message: "usuarioId está vacío"
+    });
+    if (!v.isInt(usuarioId, {min:1})) return res.status(400).send({
+        ok: false,
+        message: 'usuarioId con formato incorrecto'
+    });
+
+    db.query('call getTrabajoConPropuesta(?, ?)', [trabajoId, usuarioId], function (error, results) {
+        if (error != null) {
+            console.log('Error: ', error);
+            return res.status(500).send({error});
+        }
+
+        if (results != null) {
+            console.log('Results: ', results);
+
+            if (results[0].length == 0) return res.status(200).send({
+               ok: false,
+               message: 'Trabajo erroneo'
+            });
+
+            return res.status(200).send({
+               ok: true,
+               trabajo: {
+                   id: results[0][0].id,
+                   titulo: results[0][0].titulo,
+                   profesiones: results[0][0].profesiones,
+                   preciodesde: results[0][0].preciodesde,
+                   preciohasta: results[0][0].preciohasta,
+                   fechahorapublicacion: results[0][0].fechahorapublicacion,
+                   cantidadpropuestas: results[0][0].cantidadpropuestas,
+                   estado: results[0][0].estado,
+                   dsc: results[0][0].dsc,
+                   usuario: {
+                       id: results[0][0].usuarioid,
+                       apellido: results[0][0].apellido,
+                       nombre: results[0][0].nombre,
+                       reputacion: results[0][0].reputacion
+                   },
+                   propuesta: {
+                       id: results[0][0].propuestaid,
+                       trabajoid: trabajoId,
+                       profesionalid: usuarioId,
+                       dsc: results[0][0].propuestadsc,
+                       precio: results[0][0].propuestaprecio
+                   }
+               }
+            });
+        } else {
+            return res.status(200).send({
+                ok: false
+            });
+        }
+    });
+};
+
 exports.getMisTrabajos = (req, res) => {
     console.log('');
     console.log("------- Trabajo - GetMisTrabajos --------");
