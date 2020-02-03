@@ -10,6 +10,7 @@ const cPerfilLaboral = require('./controllers/perfilLaboral');
 const cTrabajo = require('./controllers/trabajo');
 const cProfesion = require('./controllers/profesion');
 const cPropuesta = require('./controllers/propuesta');
+const cChat = require('./controllers/chat');
 
 // Middlewares
 app.use(bodyParser.urlencoded({extended: true}));
@@ -38,6 +39,7 @@ router.put('/trabajo', cTrabajo.update);
 router.put('/trabajo/cancelar', cTrabajo.delete);
 router.get('/trabajos', cTrabajo.getTrabajos);
 router.get('/trabajo/:id', cTrabajo.getTrabajo);
+router.get('/trabajo/:trabajoId/:profesionalId', cTrabajo.getTrabajoConPropuesta);
 
 router.get('/trabajos/:usuarioId', cTrabajo.getMisTrabajos);
 router.get('/trabajos/:usuarioId/:trabajoId', cTrabajo.getMiTrabajo);
@@ -45,7 +47,11 @@ router.get('/trabajos/:usuarioId/:trabajoId', cTrabajo.getMiTrabajo);
 router.post('/propuesta', cPropuesta.insert);
 router.put('/propuesta', cPropuesta.update);
 router.get('/propuestas/:profesionalId/:trabajoId', cPropuesta.getPropuesta);
+router.get('/propuestas/:usuarioId', cPropuesta.getMisPropuestas);
 
 router.get('/profesiones', cProfesion.getProfesiones);
+
+router.get('/chats/:usuarioId', cChat.getChats);
+router.get('/chats/:chatId/mensajes', cChat.getMensajes);
 
 module.exports = http;
