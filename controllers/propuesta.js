@@ -154,3 +154,39 @@ exports.getPropuesta = (req, res) => {
         });
     });
 };
+
+exports.getMisPropuestas = (req, res) => {
+    console.log('');
+    console.log("------- Propuesta - GetMisPropuestas --------");
+    console.log('');
+
+    let usuarioId = (req.params.usuarioId || '').trim();
+
+    console.log(usuarioId);
+
+    if (v.isEmpty(usuarioId)) return res.status(200).send({
+        ok: false,
+        message: "usuarioId está vacío"
+    });
+    if (!v.isInt(usuarioId, {min:1})) return res.status(400).send({
+        ok: false,
+        message: 'usuarioId con formato incorrecto'
+    });
+
+    db.query('call getMisPropuestas(?)', [usuarioId], (error, results) => {
+        if (error != null) {
+            console.log('Error: ', error);
+            return res.status(500).send({error});
+        }
+
+        if (results == null) return res.status(200).send({ok:false});
+        console.log('Results: ', results);
+
+        if (results[0].length == 0) return res.status(200).send({ok:false});
+
+        return res.status(200).send({
+            ok: true,
+            propuestas: results[0]
+        });
+    });
+};
