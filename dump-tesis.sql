@@ -4,8 +4,6 @@
 -- ------------------------------------------------------
 -- Server version	5.6.45-log
 
-use `tesis`;
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -100,7 +98,7 @@ CREATE TABLE `chat` (
   KEY `chat_fk_1` (`receptorid`),
   CONSTRAINT `chat_fk` FOREIGN KEY (`emisorid`) REFERENCES `usuario` (`id`),
   CONSTRAINT `chat_fk_1` FOREIGN KEY (`receptorid`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,6 +107,7 @@ CREATE TABLE `chat` (
 
 LOCK TABLES `chat` WRITE;
 /*!40000 ALTER TABLE `chat` DISABLE KEYS */;
+INSERT INTO `chat` VALUES (1,1,2);
 /*!40000 ALTER TABLE `chat` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +133,7 @@ CREATE TABLE `mensaje` (
   CONSTRAINT `mensaje_fk` FOREIGN KEY (`chatid`) REFERENCES `chat` (`id`),
   CONSTRAINT `mensaje_fk_1` FOREIGN KEY (`emisorid`) REFERENCES `usuario` (`id`),
   CONSTRAINT `mensaje_fk_2` FOREIGN KEY (`receptorid`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,6 +142,7 @@ CREATE TABLE `mensaje` (
 
 LOCK TABLES `mensaje` WRITE;
 /*!40000 ALTER TABLE `mensaje` DISABLE KEYS */;
+INSERT INTO `mensaje` VALUES (1,1,'Hola',1,2,1,'2020-02-02 18:48:52'),(2,1,'Hola, todo bien?',2,1,0,'2020-02-02 18:49:57');
 /*!40000 ALTER TABLE `mensaje` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +163,7 @@ CREATE TABLE `perfil_profesional` (
   UNIQUE KEY `perfil_laboral_un` (`usuarioid`),
   FULLTEXT KEY `perfil_laboral_cono_habi_IDX` (`cono_habi`,`profesiones`),
   CONSTRAINT `perfil_laboral_fk` FOREIGN KEY (`usuarioid`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,6 +172,7 @@ CREATE TABLE `perfil_profesional` (
 
 LOCK TABLES `perfil_profesional` WRITE;
 /*!40000 ALTER TABLE `perfil_profesional` DISABLE KEYS */;
+INSERT INTO `perfil_profesional` VALUES (1,1,'trabajo en una consultora de sistemas','Analista en Sistemas,Android Developer,Mysql,.NET Developer,',1);
 /*!40000 ALTER TABLE `perfil_profesional` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,6 +199,7 @@ CREATE TABLE `perfil_profesional_profesiones` (
 
 LOCK TABLES `perfil_profesional_profesiones` WRITE;
 /*!40000 ALTER TABLE `perfil_profesional_profesiones` DISABLE KEYS */;
+INSERT INTO `perfil_profesional_profesiones` VALUES (1,1),(1,2),(1,3),(1,4);
 /*!40000 ALTER TABLE `perfil_profesional_profesiones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +216,7 @@ CREATE TABLE `profesion` (
   `activo` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `profesion_un` (`dsc`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,6 +225,7 @@ CREATE TABLE `profesion` (
 
 LOCK TABLES `profesion` WRITE;
 /*!40000 ALTER TABLE `profesion` DISABLE KEYS */;
+INSERT INTO `profesion` VALUES (1,'Analista en Sistemas',1),(2,'Android Developer',1),(3,'Mysql',1),(4,'.NET Developer',1),(5,'paseador de perro',1),(6,'cuidador de perro',1);
 /*!40000 ALTER TABLE `profesion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,7 +250,7 @@ CREATE TABLE `propuesta` (
   KEY `propuesta_fk_1` (`profesionalid`),
   CONSTRAINT `propuesta_fk` FOREIGN KEY (`trabajoid`) REFERENCES `trabajo` (`id`),
   CONSTRAINT `propuesta_fk_1` FOREIGN KEY (`profesionalid`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,6 +259,7 @@ CREATE TABLE `propuesta` (
 
 LOCK TABLES `propuesta` WRITE;
 /*!40000 ALTER TABLE `propuesta` DISABLE KEYS */;
+INSERT INTO `propuesta` VALUES (1,1,2,'Hola',100,'2020-01-31 16:25:29',NULL,0);
 /*!40000 ALTER TABLE `propuesta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -282,7 +286,7 @@ CREATE TABLE `trabajo` (
   KEY `trabajo_fk` (`usuarioid`),
   FULLTEXT KEY `trabajo_titulo_IDX` (`titulo`,`profesiones`,`dsc`),
   CONSTRAINT `trabajo_fk` FOREIGN KEY (`usuarioid`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,6 +295,7 @@ CREATE TABLE `trabajo` (
 
 LOCK TABLES `trabajo` WRITE;
 /*!40000 ALTER TABLE `trabajo` DISABLE KEYS */;
+INSERT INTO `trabajo` VALUES (1,1,'cuidado para mi perro','paseador de perro,cuidador de perro,','necesito que alguien se encargue de pasear a mis dos perros. precio por día',1,'2020-01-31 12:16:27',NULL,'PENDIENTE',0,700);
 /*!40000 ALTER TABLE `trabajo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -317,6 +322,7 @@ CREATE TABLE `trabajo_profesiones` (
 
 LOCK TABLES `trabajo_profesiones` WRITE;
 /*!40000 ALTER TABLE `trabajo_profesiones` DISABLE KEYS */;
+INSERT INTO `trabajo_profesiones` VALUES (1,5),(1,6);
 /*!40000 ALTER TABLE `trabajo_profesiones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -341,7 +347,7 @@ CREATE TABLE `usuario` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `usuario_username_un` (`username`),
   UNIQUE KEY `usuario_email_un` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,7 +356,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'thegunterhe','123','Hellrigl','Gunter Denis','thegunterhe@gmail.com','3764587561',0,1,'2020-01-29 21:34:46');
+INSERT INTO `usuario` VALUES (1,'thegunterhe','123','Hellrigl','Gunter Denis','thegunterhe@gmail.com','3764587561',0,1,'2020-01-29 21:34:46'),(2,'guni','123','Hellrigl','Gunter','theg2unterhe@gmail.com','12345678',0,1,'2020-01-31 12:18:13');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -369,13 +375,13 @@ UNLOCK TABLES;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `aceptarPropuesta`(in pPropuestaId int)
 begin
-	update propuesta set aceptado = 1
+	update propuesta set aceptado = 1 
 	where id = pPropuestaId;
-
-	update trabajo set estado = 'ACEPTADO'
+	
+	update trabajo set estado = 'ACEPTADO' 
 	where id = (
-		select trabajoid
-		from tesis.propuesta
+		select trabajoid 
+		from tesis.propuesta 
 		where id = pPropuestaId
 	);
 END ;;
@@ -417,17 +423,17 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `calificarProfesional`(in pDsc mediumtext, in pEsTrabajo int, in pEsTrabajador int, in pEsPrecio int, in pPropuestaId int, in pClienteId int, in pProfesionalId int)
 BEGIN
 	insert into tesis.calificacion_profesional(
-		dsc,
-		estrellas_trabajo,
-		estrellas_trabajador,
-		estrellas_precio,
-		profesionalid,
-		clienteid,
-		propuestaid,
-		fechahorainsert)
+		dsc, 
+		estrellas_trabajo, 
+		estrellas_trabajador, 
+		estrellas_precio, 
+		profesionalid, 
+		clienteid, 
+		propuestaid, 
+		fechahorainsert) 
 	values(pDsc, pEsTrabajo, pEsTrabajador, pEsPrecio, pProfesionalId, pClienteId, pPropuestaId, now());
 
-	update trabajo set estado = 'FINALIZADO', fechafinalizacion = now()
+	update trabajo set estado = 'FINALIZADO', fechafinalizacion = now() 
 	where id = (select trabajoid from propuesta where id = pPropuestaId);
 END ;;
 DELIMITER ;
@@ -454,25 +460,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `getchat` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getchat`(in pChatId int)
-begin
-	select * from mensaje where chatid = pChatId order by fechahorainsert;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `getChats` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -485,10 +472,76 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getChats`(in pEmisorId int)
 begin
-	select c.id, c.emisorid, c.receptorid, m.mensaje, m.fechahorainsert
+	select 
+		c.id, 
+		c.emisorid,
+		e.apellido emisorapellido,
+		e.nombre emisornombre,
+		c.receptorid, 
+		r.apellido receptorapellido,
+		r.nombre receptornombre,
+		m.emisorid mensajeemisorid,
+		m.receptorid mensajereceptorid,
+		m.mensaje,
+		m.leido,
+		m.fechahorainsert
 	from chat c
-	join mensaje m on m.chatid = c.id
-	where c.emisorid = pEmisorId;
+	join usuario e on e.id = c.emisorid
+	join usuario r on r.id = c.receptorid 
+	join (
+		select max(id) max_id, chatid
+		from mensaje 
+		group by chatid
+	) ult_msg on ult_msg.chatid = c.id 
+	join mensaje m on m.id = ult_msg.max_id
+	where c.emisorid = pEmisorId or c.receptorid = pEmisorId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getMensajes` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getMensajes`(in pChatId int)
+begin
+	select mensaje, emisorid, receptorid, leido, fechahorainsert 
+	from mensaje 
+	where chatid = pChatId
+	order by fechahorainsert;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getMisPropuestas` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getMisPropuestas`(in pUsuarioId int)
+begin
+	select 
+		p.id,
+		p.profesionalid,
+		t.titulo 
+	from tesis.propuesta p
+	join trabajo t on t.id = p.trabajoid 
+	where p.profesionalid = pUsuarioId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -507,7 +560,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getMisTrabajos`(in pUsuarioId int)
 begin
-	select
+	select 
 		t.id,
 		t.titulo,
 		t.fechahorapublicacion,
@@ -515,7 +568,7 @@ begin
 		t.preciodesde,
 		t.preciohasta,
 		t.profesiones,
-		t.estado
+		t.estado 
 	from tesis.trabajo t
 	where t.usuarioid = pUsuarioId
 	order by t.estado desc, t.fechahorapublicacion desc, t.titulo;
@@ -537,17 +590,17 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getMiTrabajo`(in pTrabajoId int)
 begin
-	select
-		t.id,
-		titulo,
-		profesiones,
-		preciodesde,
-		preciohasta,
+	select 
+		t.id, 
+		titulo, 
+		profesiones, 
+		preciodesde, 
+		preciohasta, 
 		fechahorapublicacion,
-		cantidadpropuestas,
+		cantidadpropuestas, 
 		estado,
 		dsc
-	from tesis.trabajo t
+	from tesis.trabajo t 
 	where t.id = pTrabajoId;
 END ;;
 DELIMITER ;
@@ -586,8 +639,8 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getPerfilProfesional`(in pUsuarioId int)
 begin
-	select u.id, u.apellido, u.nombre, u.email, u.telefono, u.username, u.reputacion, pp.id ppId, pp.cono_habi, pp.profesiones
-	from tesis.usuario u
+	select u.id, u.apellido, u.nombre, u.email, u.telefono, u.username, u.reputacion, pp.id ppId, pp.cono_habi, pp.profesiones 
+	from tesis.usuario u 
 	join tesis.perfil_profesional pp on pp.usuarioid = u.id
 	where u.id = pUsuarioId and u.activo = 1 and pp.activo = 1;
 END ;;
@@ -608,17 +661,17 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getProfesionales`(in pQuery longtext, in pUsuarioId int)
 begin
-	select
-		u.id,
+	select 
+		u.id, 
 		u.username,
-		u.apellido,
-		u.nombre,
+		u.apellido, 
+		u.nombre, 
 		u.reputacion,
 		pl.profesiones
 	from tesis.perfil_profesional pl
 	join usuario u on u.id = pl.usuarioid
-	where
-		match(pl.cono_habi, pl.profesiones) against(pQuery in boolean mode)
+	where 
+		match(pl.cono_habi, pl.profesiones) against(pQuery in boolean mode) 
 		and u.activo = 1 and pl.usuarioid <> pUsuarioId;
 END ;;
 DELIMITER ;
@@ -662,8 +715,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getPropuesta`(
 	in pTrabajoId int
 )
 BEGIN
-	select profesionalid, trabajoid, dsc, precio
-	from propuesta
+	select profesionalid, trabajoid, dsc, precio 
+	from propuesta 
 	where profesionalid = pProfesionalId and trabajoid = pTrabajoId;
 END ;;
 DELIMITER ;
@@ -721,22 +774,61 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getTrabajo`(in pTrabajoId int)
 begin
-	select
-		t.id,
-		titulo,
-		profesiones,
-		preciodesde,
-		preciohasta,
+	select 
+		t.id, 
+		titulo, 
+		profesiones, 
+		preciodesde, 
+		preciohasta, 
 		fechahorapublicacion,
-		cantidadpropuestas,
+		cantidadpropuestas, 
 		estado,
-		dsc,
+		dsc, 
 		t.usuarioid,
 		u.apellido,
 		u.nombre,
-		u.reputacion
-	from tesis.trabajo t
-	join usuario u on u.id = t.usuarioid
+		u.reputacion 
+	from tesis.trabajo t 
+	join usuario u on u.id = t.usuarioid 
+	where t.id = pTrabajoId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getTrabajoConPropuesta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getTrabajoConPropuesta`(in pTrabajoId int, in pProfesionalId int)
+begin
+	select 
+		t.id, 
+		titulo, 
+		profesiones, 
+		preciodesde, 
+		preciohasta, 
+		fechahorapublicacion,
+		cantidadpropuestas, 
+		estado,
+		t.dsc, 
+		t.usuarioid,
+		u.apellido,
+		u.nombre,
+		u.reputacion,
+		p.id propuestaid,
+		p.dsc propuestadsc,
+		p.precio propuestaprecio
+	from tesis.trabajo t 
+	join usuario u on u.id = t.usuarioid
+	left join propuesta p on p.trabajoid = t.id and p.profesionalid = pProfesionalId
 	where t.id = pTrabajoId;
 END ;;
 DELIMITER ;
@@ -756,7 +848,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getTrabajos`(in pQuery longtext, in pUsuarioId int)
 begin
-	select
+	select 
 		t.id,
 		t.titulo,
 		t.fechahorapublicacion,
@@ -765,7 +857,7 @@ begin
 		t.preciohasta,
 		t.profesiones
 	from tesis.trabajo t
-	where match(t.titulo, t.profesiones, t.dsc) against(pQuery in boolean mode)
+	where match(t.titulo, t.profesiones, t.dsc) against(pQuery in boolean mode) 
 	and t.estado = 'PENDIENTE' and t.usuarioid <> pUsuarioId;
 END ;;
 DELIMITER ;
@@ -785,18 +877,18 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUsuario`(in pUsuarioId int)
 begin
-	select
-		u.id,
-		u.username,
-		u.apellido,
-		u.nombre,
-		u.email,
-		u.telefono,
-		u.reputacion,
+	select 
+		u.id, 
+		u.username, 
+		u.apellido, 
+		u.nombre, 
+		u.email, 
+		u.telefono, 
+		u.reputacion, 
 		u.activo,
 		pp.activo perfilProfesionalActivo,
 		pp.profesiones,
-		pp.cono_habi
+		pp.cono_habi 
 	from tesis.usuario u
 	left join tesis.perfil_profesional pp on pp.usuarioid = u.id
 	where u.id = pUsuarioId and u.activo = 1;
@@ -856,8 +948,8 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertPerfilProfesional`(
-	in pUsuarioId int,
-	in pConoHabi longtext,
+	in pUsuarioId int, 
+	in pConoHabi longtext, 
 	in pProfesiones longtext
 )
 begin
@@ -869,9 +961,9 @@ begin
 	SET tmp = pProfesiones;
 	select tmp;
 
-	insert into tesis.perfil_profesional(usuarioid, cono_habi, profesiones, activo)
+	insert into tesis.perfil_profesional(usuarioid, cono_habi, profesiones, activo) 
 	values(pUsuarioId, pConoHabi, pProfesiones, 1);
-
+	
 	set perfilProfesionalId = last_insert_id();
 
 	WHILE CHAR_LENGTH(tmp) > 0 AND i > 0 DO
@@ -907,11 +999,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertPerfilProfesionalProfesion`(
-	in pPerfilProfesionalId int,
+	in pPerfilProfesionalId int, 
 	in pProfesionId int
 )
 begin
-	insert into tesis.perfil_profesional_profesiones
+	insert into tesis.perfil_profesional_profesiones 
 	values(pPerfilProfesionalId, pProfesionId);
 END ;;
 DELIMITER ;
@@ -933,11 +1025,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertProfesion`(in pDsc varchar(25
 begin
 	declare profId int;
 
-	select id
+	select id 
 	into profId
-	from tesis.profesion
+	from tesis.profesion 
 	where dsc = pDsc;
-
+	
 	if profId is not null then
 		set pId = profId;
 	else
@@ -961,8 +1053,8 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertPropuesta`(
-	in pTrabajoId int,
-	in pProfesionalId int,
+	in pTrabajoId int, 
+	in pProfesionalId int, 
 	in pDsc longtext,
 	in pPrecio double
 )
@@ -991,7 +1083,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertTrabajo`(
 	in pUsuarioId int,
-	in pTitulo varchar(255),
+	in pTitulo varchar(255), 
 	in pProfesiones longtext,
 	in pDsc longtext,
 	in pPrecioDesde double,
@@ -1006,18 +1098,18 @@ begin
 	SET tmp = pProfesiones;
 
 	insert into tesis.trabajo(
-		usuarioid,
+		usuarioid, 
 		titulo,
-		profesiones,
-		dsc,
+		profesiones, 
+		dsc, 
 		preciodesde,
 		preciohasta,
 		fechahorapublicacion
 	) values(
-		pUsuarioId,
+		pUsuarioId, 
 		pTitulo,
 		pProfesiones,
-		pDsc,
+		pDsc, 
 		pPrecioDesde,
 		pPrecioHasta,
 		now()
@@ -1078,18 +1170,18 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `login`(in pUsername varchar(255), in pPwd text)
 begin
-	select
-		u.id,
-		u.username,
-		u.apellido,
-		u.nombre,
-		u.email,
-		u.telefono,
-		u.reputacion,
+	select 
+		u.id, 
+		u.username, 
+		u.apellido, 
+		u.nombre, 
+		u.email, 
+		u.telefono, 
+		u.reputacion, 
 		u.activo,
 		pp.activo perfilProfesionalActivo,
 		pp.profesiones,
-		pp.cono_habi
+		pp.cono_habi 
 	from tesis.usuario u
 	left join tesis.perfil_profesional pp on pp.usuarioid = u.id
 	where u.username = pUsername and u.pwd = pPwd and u.activo = 1;
@@ -1111,7 +1203,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `registro`(in pUsername varchar(255), in pPwd text, in pApellido text, in pNombre text, in pEmail text, in pTelefono text)
 begin
-
+	
 	insert into tesis.usuario values(0, pUsername, pPwd, pApellido, pNombre, pEmail, pTelefono, 0, 1, now());
 	select 1 as ok, last_insert_id() as id;
 END ;;
@@ -1131,8 +1223,8 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updatePerfilProfesional`(
-	in pPerfilProfesionalId int,
-	in pConoHabi longtext,
+	in pPerfilProfesionalId int, 
+	in pConoHabi longtext, 
 	in pProfesiones longtext,
 	in pActivo tinyint
 )
@@ -1181,16 +1273,16 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updatePropuesta`(
-	in pProfesionalId int,
+	in pProfesionalId int, 
 	in pTrabajoId int,
 	in pDsc longtext,
 	in pPrecio double
 )
 begin
-	update propuesta set
+	update propuesta set 
 		dsc = pDsc,
 		precio = pPrecio,
-		fechahoraupdate = now()
+		fechahoraupdate = now() 
 	where profesionalid = pProfesionalId and trabajoid = pTrabajoId;
 END ;;
 DELIMITER ;
@@ -1209,12 +1301,12 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTrabajo`(
-	in pTrabajoId int,
+	in pTrabajoId int, 
 	in pTitulo varchar(255),
 	in pProfesiones longtext,
 	in pPrecioDesde double,
 	in pPrecioHasta double,
-	in pDsc longtext
+	in pDsc longtext 
 )
 begin
 	declare tmp longtext;
@@ -1242,12 +1334,12 @@ begin
 		set tmp = substring(tmp, i + 1);
 	end while;
 
-	update tesis.trabajo t set
-		t.titulo = pTitulo,
-		t.dsc = pDsc,
-		t.profesiones = pProfesiones,
-		t.preciodesde = pPrecioDesde,
-		t.preciohasta = pPrecioHasta
+	update tesis.trabajo t set 
+		t.titulo = pTitulo, 
+		t.dsc = pDsc, 
+		t.profesiones = pProfesiones, 
+		t.preciodesde = pPrecioDesde, 
+		t.preciohasta = pPrecioHasta 
 	where t.id = pTrabajoId;
 END ;;
 DELIMITER ;
@@ -1266,10 +1358,10 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateUsuario`(
-	in pUsuarioId int,
-	in pApellido text,
-	in pNombre text,
-	in pEmail varchar(255),
+	in pUsuarioId int, 
+	in pApellido text, 
+	in pNombre text, 
+	in pEmail varchar(255), 
 	in pTelefono text,
 	in pPerfilActivo tinyint,
 	in pProfesiones longtext,
@@ -1280,19 +1372,19 @@ begin
 
 	select id into vPerfilProfesionalId from tesis.perfil_profesional where usuarioid = pUsuarioId;
 
-	update tesis.usuario set
-		apellido = pApellido,
-		nombre = pNombre,
-		email = pEmail,
+	update tesis.usuario set 
+		apellido = pApellido, 
+		nombre = pNombre, 
+		email = pEmail, 
 		telefono = pTelefono
 	where id = pUsuarioId;
 
 	if vPerfilProfesionalId is null then
-		if pPerfilActivo = 1 then
-			call tesis.`insertPerfilProfesional`(pUsuarioId, pConoHabi, pProfesiones);
+		if pPerfilActivo = 1 then 
+			call tesis.`insertPerfilProfesional`(pUsuarioId, pConoHabi, pProfesiones); 
 		end if;
 	else
-		call tesis.`updatePerfilProfesional`(vPerfilProfesionalId, pConoHabi, pProfesiones, pPerfilActivo);
+		call tesis.`updatePerfilProfesional`(vPerfilProfesionalId, pConoHabi, pProfesiones, pPerfilActivo); 
 	end if;
 
 	select 1 ok;
@@ -1312,4 +1404,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-29 22:50:09
+-- Dump completed on 2020-02-02 22:35:08
