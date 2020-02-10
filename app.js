@@ -53,5 +53,6 @@ router.get('/profesiones', cProfesion.getProfesiones);
 
 router.get('/chats/:usuarioId', cChat.getChats);
 router.get('/chats/:chatId/mensajes', cChat.getMensajes);
+router.post('/chats/:chatId/enviar-mensaje', cChat.enviarMensaje);
 
 module.exports = http;
