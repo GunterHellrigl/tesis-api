@@ -11,6 +11,7 @@ const cTrabajo = require('./controllers/trabajo');
 const cProfesion = require('./controllers/profesion');
 const cPropuesta = require('./controllers/propuesta');
 const cChat = require('./controllers/chat');
+const cNotificacion = require('./controllers/notificacion');
 
 // Middlewares
 app.use(bodyParser.urlencoded({extended: true}));
@@ -54,5 +55,9 @@ router.get('/profesiones', cProfesion.getProfesiones);
 router.get('/chats/:usuarioId', cChat.getChats);
 router.get('/chats/:chatId/mensajes', cChat.getMensajes);
 router.post('/chats/:chatId/enviar-mensaje', cChat.enviarMensaje);
+
+router.get('/notificacion/all/no-leidas/:usuarioId', cNotificacion.getAllNoLeidas);
+router.get('/notificacion/all/:usuarioId', cNotificacion.getAll);
+router.put('/notificacion/read', cNotificacion.setReaded);
 
 module.exports = http;
