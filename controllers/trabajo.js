@@ -443,11 +443,12 @@ exports.getMiTrabajo = (req, res) => {
 
             for (var i = 0; i < results2[0].length; i++) {
                 data.trabajo.propuestas[i] = {
-                    trabajoid: results2[0][i].trabajoid,
+                    id: results2[0][i].id,
                     profesionalid: results2[0][i].profesionalid,
+                    username: results2[0][i].username,
                     dsc: results2[0][i].dsc,
-                    precio: results2[0][i].precio,
                     aceptado: (results2[0][i].aceptado == 1)?true:false,
+                    fechahorainsert: results2[0][i].fechahorainsert
                 }
             }
 
