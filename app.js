@@ -27,7 +27,7 @@ router.post('/usuario/registro', cUsuario.registro);
 router.post('/usuario/login', cUsuario.login);
 router.put('/usuario', cUsuario.updateUsuario);
 router.get('/usuarios/:usuarioId', cUsuario.getUsuario);
-router.get('/usuarios-profesionales', cUsuario.getProfesionales);
+router.get('/usuario/getProfesionales', cUsuario.getProfesionales);
 
 // La idea es cambiar todo lo de perfil laboral a usuario y unificar las tablas.
 

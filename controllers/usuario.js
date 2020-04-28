@@ -291,62 +291,36 @@ exports.updateUsuario = (req, res) => {
 
 exports.getProfesionales = (req, res) => {
     console.log('');
-    console.log("------- Usuario - getProfesionales --------");
+    console.log("------- Usuario.getProfesionales --------");
     console.log('');
 
     let query = (req.query.query || '').trim();
     let usuarioId = (req.query.usuarioId || '').trim();
 
-    console.log(query);
-    console.log(usuarioId);
+    console.log('query:', query);
+    console.log('usuarioId:', usuarioId);
 
-    if (v.isEmpty(query)) return res.status(400).send({
-        ok: false,
-        message: "query está vacío"
-    });
-    if (v.isEmpty(usuarioId)) return res.status(400).send({
-        ok: false,
-        message: "usuarioId está vacío"
-    });
-    if (!v.isInt(usuarioId, {min:1})) return res.status(400).send({
-        ok: false,
-        message: 'usuarioId con formato incorrecto'
-    });
-
-    let words = query.split(' ');
-    query = "";
-    words.forEach(word => {
-        query += word + '* ';
-    });
+    if (v.isEmpty(usuarioId)) return res.status(400).json(false);
+    if (!v.isInt(usuarioId, {min:1})) return res.status(400).json(false);
 
     db.query('call getProfesionales(?, ?)', [query, usuarioId], function (error, results) {
-        if (error != null) {
-            console.log('Error: ', error);
-            return res.status(500).send({error});
-        }
+        if (error != null) return res.status(400).json(false);
 
-        if (results != null) {
-            console.log('Results: ', results);
-        }
+        let usuarios = [];
 
-        let usuarios = new Array();
-
-        for (var i = 0; i < results[0].length; i++) {
+        for (let i = 0; i < results[0].length; i++) {
             usuarios[i] = {
                 id: results[0][i].id,
                 username: results[0][i].username,
                 apellido: results[0][i].apellido,
                 nombre: results[0][i].nombre,
                 reputacion: results[0][i].reputacion,
-                perfilProfesional: {
+                perfilprofesional: {
                     profesiones: results[0][i].profesiones
                 }
             }
         }
 
-        return res.status(200).send({
-            ok: true,
-            usuarios: usuarios
-        });
+        return res.status(200).send(usuarios);
     });
-}
+};
