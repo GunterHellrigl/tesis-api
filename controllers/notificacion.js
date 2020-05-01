@@ -1,5 +1,39 @@
 const v = require('validator');
 
+exports.getNotificaciones = (req, res) => {
+    console.log('');
+    console.log("------- Notificacion.getNotificaciones --------");
+    console.log('');
+
+    const usuarioId = (req.query.usuarioId || '').trim();
+
+    console.log("usuarioId:", usuarioId);
+
+    if (v.isEmpty(usuarioId)) return res.status(400).json(false);
+    if (!v.isInt(usuarioId, {min:1})) return res.status(400).json(false);
+
+    db.query('call getNotificaciones(?)', usuarioId, (error, results) => {
+        if (error != null) return res.status(400).json(false);
+
+		let notificaciones = [];
+console.log(results[0]);
+		for(let i = 0; i < results[0].length; i++) {
+			notificaciones[i] = {
+				id: results[0][i].id,
+				usuario: {
+					id: results[0][i].usuarioid 				
+				},
+				titulo: results[0][i].titulo,
+				fechaHora: results[0][i].fechahora,
+				leido: results[0][i].leido === 1,
+				tipo: results[0][i].tipo
+			}		
+		}
+
+        return res.status(200).json(notificaciones);
+    });
+};
+
 exports.getAllNoLeidas = (req, res) => {
 	console.log('');
     console.log("------- Notificacion - getAllNoLeidas --------");

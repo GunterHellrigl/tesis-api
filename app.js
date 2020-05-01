@@ -25,24 +25,16 @@ router.get('/test', function (req, res) {
 
 router.post('/usuario/registro', cUsuario.registro);
 router.post('/usuario/login', cUsuario.login);
-router.put('/usuario', cUsuario.updateUsuario);
-router.get('/usuarios/:usuarioId', cUsuario.getUsuario);
+router.get('/usuario/getPerfil', cUsuario.getPerfil);
+router.put('/usuario/updatePerfil', cUsuario.updatePerfil);
 router.get('/usuario/getProfesionales', cUsuario.getProfesionales);
-
-// La idea es cambiar todo lo de perfil laboral a usuario y unificar las tablas.
-
-router.post('/perfil-laboral', cPerfilLaboral.registro);
-router.put('/perfil-laboral/activar', cPerfilLaboral.activar);
-router.put('/perfil-laboral/desactivar', cPerfilLaboral.desactivar);
-router.get('/perfil-profesional/:id', cPerfilLaboral.getPerfilProfesional);
-
 
 router.get('/anuncio/getAnuncios', cAnuncio.getAnuncios);
 router.get('/anuncio/getAnuncio', cAnuncio.getAnuncio);
 router.get('/anuncio/getAnunciosPublicados', cAnuncio.getAnunciosPublicados);
 router.get('/anuncio/getAnuncioPublicado', cAnuncio.getAnuncioPublicado);
-router.put('/anuncio/editarAnuncio', cAnuncio.editarAnuncio);
 router.post('/anuncio/publicarAnuncio', cAnuncio.publicarAnuncio);
+router.put('/anuncio/editarAnuncio', cAnuncio.editarAnuncio);
 router.put('/anuncio/eliminarAnuncio', cAnuncio.eliminarAnuncio);
 
 router.post('/propuesta/enviarPropuesta', cPropuesta.enviarPropuesta);
@@ -58,6 +50,8 @@ router.get('/profesiones', cProfesion.getProfesiones);
 router.get('/chats/:usuarioId', cChat.getChats);
 router.get('/chats/:chatId/mensajes', cChat.getMensajes);
 router.post('/chats/:chatId/enviar-mensaje', cChat.enviarMensaje);
+
+router.get('/notificacion/getNotificaciones', cNotificacion.getNotificaciones);
 
 router.get('/notificacion/all/no-leidas/:usuarioId', cNotificacion.getAllNoLeidas);
 router.get('/notificacion/all/:usuarioId', cNotificacion.getAll);
