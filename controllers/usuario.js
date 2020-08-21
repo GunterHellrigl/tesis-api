@@ -56,7 +56,7 @@ exports.login = (req, res) => {
             apellido: results[0][0].vApellido,
             nombre: results[0][0].vNombre,
             reputacion: results[0][0].vReputacion,
-	    foto: results[0][0].vFoto
+            foto: results[0][0].vFoto
         });
     });
 };
@@ -118,7 +118,7 @@ exports.updatePerfil = (req, res) => {
     let apellido = (req.body.apellido || '').trim();
     let nombre = (req.body.nombre || '').trim();
     let email = (req.body.email || '').trim();
-    let isProfesional = (req.body.isProfesional == 'true')? 1 : 0;
+    let isProfesional = (req.body.isProfesional == 'true') ? 1 : 0;
     let profesiones = (req.body.profesiones || '').trim();
     let acercaDeMi = (req.body.acercaDeMi || '').trim();
 
@@ -155,10 +155,10 @@ exports.updatePerfil = (req, res) => {
         if (error != null) return res.status(400).json(false);
 
         return res.status(200).send({
-	    ok: results[0][0].ok === 1,
-	    updated: results[0][0].ok === 1,
-	    foto: file.filename	
-	});
+            ok: results[0][0].ok === 1,
+            updated: results[0][0].ok === 1,
+            foto: file.filename
+        });
     });
 };
 
@@ -167,17 +167,20 @@ exports.getProfesionales = (req, res) => {
     console.log("------- Usuario.getProfesionales --------");
     console.log('');
 
-    let query = (req.query.query || '').trim();
-    let usuarioId = (req.query.usuarioId || '').trim();
+    const query = (req.query.query || '').trim();
+    const usuarioId = (req.query.usuarioId || '').trim();
 
     console.log('query:', query);
     console.log('usuarioId:', usuarioId);
 
-    if (v.isEmpty(usuarioId)) return res.status(400).json(false);
-    if (!v.isInt(usuarioId, {min: 1})) return res.status(400).json(false);
+    // if (v.isEmpty(usuarioId)) return res.status(400).json(false);
+    // if (!v.isInt(usuarioId, {min: 1})) return res.status(400).json(false);
 
     db.query('call usuarioGetProfesionales(?, ?)', [query, usuarioId], function (error, results) {
-        if (error != null) return res.status(400).json(false);
+        if (error != null) {
+            console.log("Error:", error);
+            return res.status(400).json(false);
+        }
 
         let usuarios = [];
 
@@ -188,7 +191,8 @@ exports.getProfesionales = (req, res) => {
                 apellido: results[0][i].apellido,
                 nombre: results[0][i].nombre,
                 reputacion: results[0][i].reputacion,
-                profesiones: results[0][i].profesiones
+                foto: results[0][i].foto,
+                profesionesString: results[0][i].profesiones
             }
         }
 
