@@ -119,44 +119,57 @@ exports.getAnuncioPublicado = (req, res) => {
                 console.log(e2);
                 return res.status(400).json(false);
             }
+            
+            db.query('call profesionGetByAnuncio(?)', anuncioId, (e3, r3) => {
+            	if (e3) {
+		            console.log(e3);
+		            return res.status(400).json(false);
+		        }
+		        
+		        let response = {
+		        	ok: true,
+		        	anuncio: {
+		        		id: r1[0][0].id,
+						titulo: r1[0][0].titulo,
+						precioDesde: r1[0][0].precioDesde,
+						precioHasta: r1[0][0].precioHasta,
+						fechaHoraPublicacion: r1[0][0].fechaHoraPublicacion,
+						cantidadPropuestas: r1[0][0].cantidadPropuestas,
+						estadoId: r1[0][0].estadoId,
+						dsc: r1[0][0].dsc,
+						profesiones: []
+		        	},
+		            propuestas: []
+		        };
+		        
+		        if (r2[0] != null) {
+		            for (let i = 0; i < r2[0].length; i++) {
+		                response.propuestas[i] = {
+		                    id: r2[0][i].id,
+		                    dsc: r2[0][i].dsc,
+		                    precio: r2[0][i].precio,
+		                    isAceptado: r2[0][i].isAceptado === 1,
+		                    fechaHoraInsert: r2[0][i].fechaHoraInsert,
+		                    profesional: {
+		                        id: r2[0][i].profesionalId,
+		                        username: r2[0][i].username
+		                    }
+		                }
+		            }
+		        }
+		        
+		        if (r3[0] != null) {
+		        	for (let i = 0; i < r3[0].length; i++) {
+		        		response.anuncio.profesiones[i] = {
+		        			id: r3[0][i].id,
+		        			dsc: r3[0][i].dsc
+		        		}
+		        	}
+		        }
 
-            let anuncio = {
-                id: r1[0][0].id,
-                titulo: r1[0][0].titulo,
-                profesiones: r1[0][0].profesiones,
-                precioDesde: r1[0][0].precioDesde,
-                precioHasta: r1[0][0].precioHasta,
-                fechaHoraPublicacion: r1[0][0].fechaHoraPublicacion,
-                cantidadPropuestas: r1[0][0].cantidadPropuestas,
-                estado: r1[0][0].estado,
-                dsc: r1[0][0].dsc,
-                usuario: {
-                    id: r1[0][0].usuarioId,
-                    apellido: r1[0][0].apellido,
-                    nombre: r1[0][0].nombre,
-                    reputacion: r1[0][0].reputacion
-                },
-                propuestas: []
-            };
-
-            if (r2[0] != null) {
-                for (let i = 0; i < r2[0].length; i++) {
-                    anuncio.propuestas[i] = {
-                        id: r2[0][i].id,
-                        dsc: r2[0][i].dsc,
-                        precio: r2[0][i].precio,
-                        isAceptado: r2[0][i].isAceptado === 1,
-                        fechaHoraInsert: r2[0][i].fechaHoraInsert,
-                        profesional: {
-                            id: r2[0][i].profesionalId,
-                            username: r2[0][i].username
-                        }
-                    }
-                }
-            }
-
-            console.log('res', anuncio);
-            return res.status(200).json(anuncio);
+		        console.log('res', response);
+		        return res.status(200).json(response);
+            });
         });
     });
 };
