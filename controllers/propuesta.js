@@ -194,6 +194,9 @@ exports.editarPropuesta = (req, res) => {
     const dsc = (req.body.dsc || '').trim();
     const precio = (req.body.precio || '0').trim();
 
+    console.log('id',id);
+    console.log('dsc',dsc);
+    console.log('precio', precio);
     // if (v.isEmpty(data[0])) return res.status(400).json(false);
     // if (v.isEmpty(data[1])) return res.status(400).json(false);
     // if (!v.isEmpty(data[2]) && !v.isDecimal(data[2])) return res.status(400).json(false);

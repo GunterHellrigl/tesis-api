@@ -54,27 +54,62 @@ exports.getAnuncio = (req, res) => {
                 return res.status(400).json(false);
             }
 
-            const anuncio = {
-                id: r1[0][0].id,
-                titulo: r1[0][0].titulo,
-                profesiones: r1[0][0].profesiones,
-                precioDesde: r1[0][0].precioDesde,
-                precioHasta: r1[0][0].precioHasta,
-                fechaHoraPublicacion: r1[0][0].fechaHoraPublicacion,
-                cantidadPropuestas: r1[0][0].cantidadPropuestas,
-                estado: r1[0][0].estado,
-                dsc: r1[0][0].dsc,
-                usuario: {
-                    id: r1[0][0].usuarioId,
-                    apellido: r1[0][0].apellido,
-                    nombre: r1[0][0].nombre,
-                    reputacion: r1[0][0].reputacion
-                },
-                propuesta: r2[0][0]
-            };
+            db.query('call profesionGetByAnuncio(?)', anuncioId, (e3, r3) => {
+                if (e3) {
+                    console.log(e3);
+                    return res.status(400).json(false);
+                }
 
-            console.log('res', anuncio)
-            res.status(200).json(anuncio);
+                let response = {
+                    ok: true,
+                    anuncio: {
+                        id: r1[0][0].id,
+                        usuario: {
+                            id: r1[0][0].usuarioId,
+                            username: r1[0][0].username,
+                            apellido: r1[0][0].apellido,
+                            nombre: r1[0][0].nombre,
+                            reputacion: r1[0][0].reputacion,
+                            foto: r1[0][0].foto
+                        },
+                        titulo: r1[0][0].titulo,
+                        precioDesde: r1[0][0].precioDesde,
+                        precioHasta: r1[0][0].precioHasta,
+                        fechaHoraPublicacion: r1[0][0].fechaHoraPublicacion,
+                        cantidadPropuestas: r1[0][0].cantidadPropuestas,
+                        estadoId: r1[0][0].estadoId,
+                        dsc: r1[0][0].dsc,
+                        profesiones: []
+                    },
+                    propuesta: null
+                };
+
+                if (r2[0][0] != null) {
+                    response.propuesta = {
+                        id: r2[0][0].id,
+                        profesional: {
+                            id: r2[0][0].profesionalId
+                        },
+                        anuncio: {
+                            id: r2[0][0].anuncioId
+                        },
+                        dsc: r2[0][0].dsc,
+                        precio: r2[0][0].precio
+                    }
+                }
+
+                if (r3[0] != null) {
+                    for (let i = 0; i < r3[0].length; i++) {
+                        response.anuncio.profesiones[i] = {
+                            id: r3[0][i].id,
+                            dsc: r3[0][i].dsc
+                        }
+                    }
+                }
+
+                console.log('res', response);
+                return res.status(200).json(response);
+            });
         });
     });
 };
