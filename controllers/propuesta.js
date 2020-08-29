@@ -194,8 +194,8 @@ exports.editarPropuesta = (req, res) => {
     const dsc = (req.body.dsc || '').trim();
     const precio = (req.body.precio || '0').trim();
 
-    console.log('id',id);
-    console.log('dsc',dsc);
+    console.log('id', id);
+    console.log('dsc', dsc);
     console.log('precio', precio);
     // if (v.isEmpty(data[0])) return res.status(400).json(false);
     // if (v.isEmpty(data[1])) return res.status(400).json(false);
@@ -216,60 +216,60 @@ exports.aceptarPropuesta = (req, res) => {
     console.log("------- Propuesta.aceptarPropuesta --------");
     console.log('');
 
-    // const propuestaId = req.body.propuestaId || '';
-    //
-    // if (v.isEmpty(propuestaId)) return res.status(400).json(false);
-    //
-    // console.log('propuestaId:', propuestaId);
-    //
-    // db.query('call propuestaAceptar(?)', propuestaId, (e1, r1) => {
-    // 	console.log('e1:', e1);
-    //     if (e1) return res.status(400).json(false);
-    //
-    //     res.status(200).json({
-    // 		id: r1[0][0].chatId,
-    // 		emisor: {
-    // 			id: r1[0][0].emisorId
-    // 		},
-    // 		receptor: {
-    // 			id: r1[0][0].receptorId
-    // 		}
-    // 	});
-    //
-    //     db.query('call getDataFromPropuestaToNotify(?)', propuestaId, (e2, r2) => {
-    //     	console.log('e2:', e2);
-    //         if (e2 != null) return;
-    //
-    //         console.log(r2);
-    //
-    //         const token = r2[0][0].token || '';
-    //         const anuncioTitulo = r2[0][0].titulo || '';
-    //
-    //         console.log('token:', token);
-    //         console.log('anuncioTitulo:', anuncioTitulo);
-    //
-    //         const payload = {
-    //             data: {
-    //                 action: 'notification',
-    //                 tipo: '1',
-    //                 drawable: 'ic_work',
-    //                 title: '¡Aceptaron tu propuesta!',
-    //                 contentText: "Tu propuesta en '" + anuncioTitulo + "' ha sido aceptada!!"
-    //             }
-    //         };
-    //         const options = {
-    //             priority: "high",
-    //             timeToLive: 60 * 60 * 24
-    //         };
-    //
-    //         fcm.messaging().sendToDevice(token, payload, options)
-    //             .then(response => {
-    //                 console.log('Action executed');
-    //             })
-    //             .catch(error => {
-    //                 console.log(error);
-    //             });
-    //
-    //     });
-    // });
+    const propuestaId = req.body.propuestaId || '';
+
+    console.log('propuestaId:', propuestaId);
+
+    db.query('call propuestaAceptar(?)', propuestaId, (e1, r1) => {
+        if (e1) {
+            console.log('Error', e1);
+            return res.status(400).json(false);
+        }
+
+        res.status(200).json({
+            id: r1[0][0].chatId,
+            emisor: {
+                id: r1[0][0].emisorId
+            },
+            receptor: {
+                id: r1[0][0].receptorId
+            }
+        });
+        //
+        //     db.query('call getDataFromPropuestaToNotify(?)', propuestaId, (e2, r2) => {
+        //     	console.log('e2:', e2);
+        //         if (e2 != null) return;
+        //
+        //         console.log(r2);
+        //
+        //         const token = r2[0][0].token || '';
+        //         const anuncioTitulo = r2[0][0].titulo || '';
+        //
+        //         console.log('token:', token);
+        //         console.log('anuncioTitulo:', anuncioTitulo);
+        //
+        //         const payload = {
+        //             data: {
+        //                 action: 'notification',
+        //                 tipo: '1',
+        //                 drawable: 'ic_work',
+        //                 title: '¡Aceptaron tu propuesta!',
+        //                 contentText: "Tu propuesta en '" + anuncioTitulo + "' ha sido aceptada!!"
+        //             }
+        //         };
+        //         const options = {
+        //             priority: "high",
+        //             timeToLive: 60 * 60 * 24
+        //         };
+        //
+        //         fcm.messaging().sendToDevice(token, payload, options)
+        //             .then(response => {
+        //                 console.log('Action executed');
+        //             })
+        //             .catch(error => {
+        //                 console.log(error);
+        //             });
+        //
+        //     });
+    });
 };
