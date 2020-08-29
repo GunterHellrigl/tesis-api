@@ -187,7 +187,13 @@ exports.getAnuncioPublicado = (req, res) => {
 		                    fechaHoraInsert: r2[0][i].fechaHoraInsert,
 		                    profesional: {
 		                        id: r2[0][i].profesionalId,
-		                        username: r2[0][i].username
+		                        username: r2[0][i].username,
+		                        foto: r2[0][i].foto,
+		                        telefono: r2[0][i].telefono,
+		                        email: r2[0][i].email,
+		                        whatsapp: r2[0][i].whatsapp,
+		                        instagram: r2[0][i].instagram,
+		                        facebook: r2[0][i].facebook,
 		                    }
 		                }
 		            }
