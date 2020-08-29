@@ -200,6 +200,34 @@ exports.getProfesionales = (req, res) => {
     });
 };
 
+exports.getProfesional = (req, res) => {
+    console.log('');
+    console.log("------- Usuario.getProfesional --------");
+    console.log('');
+
+    const usuarioId = (req.query.usuarioId || '').trim();
+
+    console.log('usuarioId:', usuarioId);
+
+    db.query('call usuarioGetProfesional(?)', usuarioId, (error, results) => {
+        if (error != null) {
+            console.log("Error:", error);
+            return res.status(400).json(false);
+        }
+
+        return res.status(200).json({
+            id: usuarioId,
+            username: results[0][0].username,
+            apellido: results[0][0].apellido,
+            nombre: results[0][0].nombre,
+            reputacion: results[0][0].reputacion,
+            foto: results[0][0].foto,
+            acercaDeMi: results[0][0].acercaDeMi,
+            profesionesString: results[0][0].profesiones
+        });
+    });
+};
+
 exports.getReputacion = (req, res) => {
     console.log('');
     console.log("------- Usuario.getReputacion --------");
