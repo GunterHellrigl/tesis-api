@@ -33,6 +33,7 @@ router.get('/usuario/getPerfil', cUsuario.getPerfil);
 router.put('/usuario/updatePerfil', uploader.single('foto'), cUsuario.updatePerfil);
 
 router.get('/usuario/getProfesionales', cUsuario.getProfesionales);
+router.get('/usuario/getProfesional', cUsuario.getProfesional);
 router.get('/usuario/getReputacion', cUsuario.getReputacion);
 
 router.get('/anuncio/getAnuncios', cAnuncio.getAnuncios);
@@ -50,9 +51,9 @@ router.post('/propuesta/aceptarPropuesta', cPropuesta.aceptarPropuesta);
 
 router.get('/notificacion/getNotificaciones', cNotificacion.getNotificaciones);
 
-router.get('/chats/:usuarioId', cChat.getChats);
-router.get('/chats/:chatId/mensajes', cChat.getMensajes);
-router.post('/chats/:chatId/enviar-mensaje', cChat.enviarMensaje);
+router.get('/chat/getChat', cChat.getChat);
+router.get('/chat/getChats', cChat.getChats);
+router.post('/chat/nuevoMensaje', cChat.nuevoMensaje);
 
 router.post('/firebase/prueba', (req, res) => {
     const token = req.body.token;
