@@ -12,8 +12,6 @@ const uploader = multer({dest: 'images/'});
 // importo los controladores
 const cUsuario = require('./controllers/usuario');
 const cAnuncio = require('./controllers/anuncio');
-
-const cProfesion = require('./controllers/profesion');
 const cPropuesta = require('./controllers/propuesta');
 const cChat = require('./controllers/chat');
 const cNotificacion = require('./controllers/notificacion');
@@ -31,7 +29,6 @@ router.post('/usuario/registro', cUsuario.registro);
 router.post('/usuario/login', cUsuario.login);
 router.get('/usuario/getPerfil', cUsuario.getPerfil);
 router.put('/usuario/updatePerfil', uploader.single('foto'), cUsuario.updatePerfil);
-
 router.get('/usuario/getProfesionales', cUsuario.getProfesionales);
 router.get('/usuario/getProfesional', cUsuario.getProfesional);
 router.get('/usuario/getReputacion', cUsuario.getReputacion);
@@ -50,6 +47,7 @@ router.put('/propuesta/editarPropuesta', cPropuesta.editarPropuesta);
 router.post('/propuesta/aceptarPropuesta', cPropuesta.aceptarPropuesta);
 
 router.get('/notificacion/getNotificaciones', cNotificacion.getNotificaciones);
+router.put('/notificacion/setLeido', cNotificacion.setLeido);
 
 router.get('/chat/getChat', cChat.getChat);
 router.get('/chat/getChats', cChat.getChats);
