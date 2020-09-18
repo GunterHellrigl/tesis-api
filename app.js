@@ -40,6 +40,10 @@ router.get('/anuncio/getAnuncioPublicado', cAnuncio.getAnuncioPublicado);
 router.post('/anuncio/publicarAnuncio', cAnuncio.publicarAnuncio);
 router.put('/anuncio/editarAnuncio', cAnuncio.editarAnuncio);
 router.put('/anuncio/eliminarAnuncio', cAnuncio.eliminarAnuncio);
+router.get('/anuncio/getTrabajosPendientes', cAnuncio.getTrabajosPendientes);
+router.get('/anuncio/getTrabajosFinalizados', cAnuncio.getTrabajosFinalizados);
+router.post('/anuncio/calificarUsuario', cAnuncio.calificarUsuario);
+router.post('/anuncio/calificarProfesional', cAnuncio.calificarProfesional);
 
 router.get('/propuesta/getPropuestasEnviadas', cPropuesta.getPropuestasEnviadas);
 router.post('/propuesta/enviarPropuesta', cPropuesta.enviarPropuesta);

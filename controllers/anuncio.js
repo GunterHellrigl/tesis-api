@@ -120,7 +120,7 @@ exports.getAnunciosPublicados = (req, res) => {
     console.log('');
 
     const usuarioId = (req.query.usuarioId || '').trim();
-
+    console.log("usuarioId", usuarioId);
     //TODO validaciones
 
     db.query('call anuncioGetAnunciosPublicados(?)', usuarioId, (error, results) => {
@@ -298,5 +298,97 @@ exports.eliminarAnuncio = (req, res) => {
 
         console.log('res', results[0][0].ok === 1)
         res.status(200).json(results[0][0].ok === 1);
+    });
+};
+
+exports.getTrabajosPendientes = (req, res) => {
+    console.log('');
+    console.log("------- Anuncio.getTrabajosPendientes --------");
+    console.log('');
+
+    const usuarioId = (req.query.usuarioId || '').trim();
+
+    console.log(usuarioId);
+
+    db.query('call anuncioGetTrabajosPendientes(?)', usuarioId, (e1, r1) => {
+        if (e1) {
+            console.log("Error", e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0]);
+        return res.status(200).send(r1[0]);
+    });
+};
+
+exports.getTrabajosFinalizados = (req, res) => {
+    console.log('');
+    console.log("------- Anuncio.getTrabajosFinalizados --------");
+    console.log('');
+
+    const usuarioId = (req.query.usuarioId || '').trim();
+
+    console.log(usuarioId);
+
+    db.query('call anuncioGetTrabajosFinalizados(?)', usuarioId, (e1, r1) => {
+        if (e1) {
+            console.log("Error", e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0]);
+        return res.status(200).send(r1[0]);
+    });
+};
+
+exports.calificarUsuario = (req, res) => {
+    console.log('');
+    console.log('------- Anuncio.calificarUsuario --------');
+    console.log('');
+
+    const id = (req.body.id || '').trim();
+    const reputacion = (req.body.reputacion || '').trim();
+    const dsc = (req.body.dsc || '').trim();
+
+    console.log("id", id);
+    console.log("reputacion", reputacion);
+    console.log("dsc", dsc);
+
+    db.query('call anuncioCalificarUsuario(?, ?, ?)', [id, reputacion, dsc], (e1, r1) => {
+        if (e1) {
+            console.log("Error", e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0][0].ok === 1)
+        res.status(200).json(r1[0][0].ok === 1);
+    });
+};
+
+exports.calificarProfesional = (req, res) => {
+    console.log('');
+    console.log('------- Anuncio.calificarProfesional --------');
+    console.log('');
+
+    const id = (req.body.id || '').trim();
+    const trabajo = (req.body.trabajo || '').trim();
+    const trabajador = (req.body.trabajador || '').trim();
+    const precio = (req.body.precio || '').trim();
+    const dsc = (req.body.dsc || '').trim();
+
+    console.log("id", id);
+    console.log("trabajo", trabajo);
+    console.log("trabajador", trabajador);
+    console.log("precio", precio);
+    console.log("dsc", dsc);
+
+    db.query('call anuncioCalificarProfesional(?, ?, ?, ?, ?)', [id, trabajo, trabajador, precio, dsc], (e1, r1) => {
+        if (e1) {
+            console.log("Error", e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0][0].ok === 1)
+        res.status(200).json(r1[0][0].ok === 1);
     });
 };
