@@ -120,24 +120,22 @@ exports.aceptarPropuesta = (req, res) => {
     console.log('');
 
     const propuestaId = req.body.propuestaId || '';
+    const anuncioId = req.body.anuncioId || '';
+    const anuncioTitulo = req.body.anuncioTitulo || '';
+    const profesionalId = req.body.profesionalId || '';
 
     console.log('propuestaId:', propuestaId);
+    console.log('anuncioId:', anuncioId);
+    console.log('anuncioTitulo:', anuncioTitulo);
+    console.log('profesionalId:', profesionalId);
 
-    db.query('call propuestaAceptar(?)', propuestaId, (e1, r1) => {
+    db.query('call propuestaAceptar(?,?,?,?)', [propuestaId, anuncioId, anuncioTitulo, profesionalId], (e1, r1) => {
         if (e1) {
             console.log('Error', e1);
             return res.status(400).json(false);
         }
 
-        res.status(200).json({
-            id: r1[0][0].chatId,
-            emisor: {
-                id: r1[0][0].emisorId
-            },
-            receptor: {
-                id: r1[0][0].receptorId
-            }
-        });
+        res.status(200).json(true);
         //
         //     db.query('call getDataFromPropuestaToNotify(?)', propuestaId, (e2, r2) => {
         //     	console.log('e2:', e2);
