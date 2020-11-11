@@ -71,6 +71,12 @@ exports.getChat = (req, res) => {
         }
 
         const chatId = r1[0][0].id;
+        const usuario1Id = r1[0][0].usuario1Id;
+        const usuario2Id = r1[0][0].usuario2Id;
+
+        console.log('chatId', chatId)
+        console.log('usuario1Id', usuario1Id)
+        console.log('usuario2Id', usuario2Id)
 
         db.query('call chatGetMensajes(?)', chatId, (e2, r2) => {
             if (e2) {
@@ -80,12 +86,14 @@ exports.getChat = (req, res) => {
 
             let result = {
                 id: chatId,
-                usuario1Id: emisorId,
-                usuario2Id: receptorId,
+                usuario1Id: usuario1Id,
+                usuario2Id: usuario2Id,
                 mensajes: []
             }
 
             for (let i = 0; i < r2[0].length; i++) {
+                console.log(r2[0][i]);
+
                 result.mensajes[i] = {
                     id: r2[0][i].id,
                     chatId: r2[0][i].chatId,
@@ -99,14 +107,16 @@ exports.getChat = (req, res) => {
 
             res.status(200).json(result);
 
-            const ultimoMensajeId = result.mensajes[result.mensajes.length - 1].id;
-            console.log('ultimoMensajeId', ultimoMensajeId);
-            db.query('call chatSetMensajesLeidos(?, ?, ?)', [chatId, receptorId, ultimoMensajeId], (e3, r3) => {
-                if (e3) {
-                    console.log('Error: ', e3);
-                    return res.status(400).json(false);
-                }
-            });
+            if (result.mensajes.length > 0) {
+                const ultimoMensajeId = result.mensajes[result.mensajes.length - 1].id;
+                console.log('ultimoMensajeId', ultimoMensajeId);
+                db.query('call chatSetMensajesLeidos(?, ?, ?)', [chatId, receptorId, ultimoMensajeId], (e3, r3) => {
+                    if (e3) {
+                        console.log('Error: ', e3);
+                        return res.status(400).json(false);
+                    }
+                });
+            }
         });
     });
 };
