@@ -13,6 +13,12 @@ exports.registro = (req, res) => {
     let nombre = (req.body.nombre || '').trim();
     let email = (req.body.email || '').trim();
 
+    console.log('username', username);
+    console.log('pwd', pwd);
+    console.log('apellido', apellido);
+    console.log('nombre', nombre);
+    console.log('email', email);
+
     if (v.isEmpty(username)) return res.status(400).json(false);
     if (v.isEmpty(pwd)) return res.status(400).json(false);
     if (v.isEmpty(apellido)) return res.status(400).json(false);
@@ -23,8 +29,12 @@ exports.registro = (req, res) => {
     const sql = 'call usuarioRegistro(?,?,?,?,?)';
 
     db.query(sql, [username, pwd, apellido, nombre, email], (error, results) => {
-        if (error != null) return res.status(400).json(false);
+        if (error != null) {
+            console.log('error', error);
+            return res.status(400).json(false);
+        }
 
+        console.log('res', results[0][0].id);
         res.status(200).json(results[0][0].id);
     });
 };
@@ -96,15 +106,87 @@ exports.getPerfil = (req, res) => {
                 }
             }
 
-            res.status(200).json({
-                id: usuarioId,
-                apellido: r1[0][0].apellido,
-                nombre: r1[0][0].nombre,
-                email: r1[0][0].email,
-                isProfesional: r1[0][0].isProfesional === 1,
-                acercaDeMi: r1[0][0].acercaDeMi || '',
-                profesiones: profesiones
+            db.query('call usuarioGetContactos(?)', usuarioId, (e3, r3) => {
+                if (e3 != null) {
+                    console.log(e3);
+                    return res.status(400).json(false);
+                }
+
+                let contactos = [];
+
+                for (let i = 0; i < r3[0].length; i++) {
+                    contactos[i] = {
+                        id: r3[0][i].id,
+                        dsc: r3[0][i].dsc,
+                        valor: r3[0][i].valor
+                    }
+                }
+
+                db.query('call usuarioGetEtiquetas(?)', usuarioId, (e4, r4) => {
+                    if (e4 != null) {
+                        console.log(e4);
+                        return res.status(400).json(false);
+                    }
+
+                    let etiquetas = [];
+
+                    for (let i = 0; i < r4[0].length; i++) {
+                        etiquetas[i] = {
+                            id: r4[0][i].id,
+                            dsc: r4[0][i].dsc
+                        }
+                    }
+
+                    res.status(200).json({
+                        id: usuarioId,
+                        apellido: r1[0][0].apellido,
+                        nombre: r1[0][0].nombre,
+                        email: r1[0][0].email,
+                        foto: r1[0][0].foto,
+                        isProfesional: r1[0][0].isProfesional === 1,
+                        dni: r1[0][0].dni,
+                        acercaDeMi: r1[0][0].acercaDeMi || '',
+                        profesiones: profesiones,
+                        contactos: contactos,
+                        etiquetas: etiquetas
+                    });
+                });
             });
+        });
+    });
+};
+
+exports.updateDatosPersonales = (req, res) => {
+    console.log('');
+    console.log("------- Usuario.updateDatosPersonales --------");
+    console.log('');
+
+    let id = (req.body.id || '').trim();
+    let apellido = (req.body.apellido || '').trim();
+    let nombre = (req.body.nombre || '').trim();
+    let email = (req.body.email || '').trim();
+
+    console.log(id);
+    console.log(apellido);
+    console.log(nombre);
+    console.log(email);
+
+    if (v.isEmpty(id)) return res.status(400).json(false);
+    if (v.isEmpty(apellido)) return res.status(400).json(false);
+    if (v.isEmpty(nombre)) return res.status(400).json(false);
+    if (v.isEmpty(email)) return res.status(400).json(false);
+    if (!v.isEmail(email)) return res.status(400).json(false);
+
+    db.query('call usuarioUpdateDatosPersonales(?, ?, ?, ?)', [id, apellido, nombre, email], (e1, r1) => {
+        if (e1 != null) {
+            console.log('e1', e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0][0].ok);
+
+        res.status(200).json({
+            ok: r1[0][0].ok
         });
     });
 };
@@ -195,7 +277,45 @@ exports.getProfesionales = (req, res) => {
                 profesionesString: results[0][i].profesiones
             }
         }
+        console.log(usuarios);
+        return res.status(200).send(usuarios);
+    });
+};
 
+exports.getProfesionales10 = (req, res) => {
+    console.log('');
+    console.log("------- Usuario.getProfesionales10 --------");
+    console.log('');
+
+    const query = (req.query.query || '').trim();
+    const usuarioId = (req.query.usuarioId || '').trim();
+
+    console.log('query:', query);
+    console.log('usuarioId:', usuarioId);
+
+    // if (v.isEmpty(usuarioId)) return res.status(400).json(false);
+    // if (!v.isInt(usuarioId, {min: 1})) return res.status(400).json(false);
+
+    db.query('call usuarioGetProfesionales10(?, ?)', [query, usuarioId], function (error, results) {
+        if (error != null) {
+            console.log("Error:", error);
+            return res.status(400).json(false);
+        }
+
+        let usuarios = [];
+
+        for (let i = 0; i < results[0].length; i++) {
+            usuarios[i] = {
+                id: results[0][i].id,
+                username: results[0][i].username,
+                apellido: results[0][i].apellido,
+                nombre: results[0][i].nombre,
+                reputacion: results[0][i].reputacion,
+                foto: results[0][i].foto,
+                profesionesString: results[0][i].profesiones
+            }
+        }
+        console.log(usuarios);
         return res.status(200).send(usuarios);
     });
 };
