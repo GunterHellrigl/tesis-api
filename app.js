@@ -15,6 +15,7 @@ const cAnuncio = require('./controllers/anuncio');
 const cPropuesta = require('./controllers/propuesta');
 const cChat = require('./controllers/chat');
 const cNotificacion = require('./controllers/notificacion');
+const cContacto = require('./controllers/contacto');
 
 // Middlewares
 app.use(bodyParser.urlencoded({extended: true}));
@@ -28,8 +29,10 @@ router.get('/test', function (req, res) {
 router.post('/usuario/registro', cUsuario.registro);
 router.post('/usuario/login', cUsuario.login);
 router.get('/usuario/getPerfil', cUsuario.getPerfil);
+router.put('/usuario/updateDatosPersonales', cUsuario.updateDatosPersonales);
 router.put('/usuario/updatePerfil', uploader.single('foto'), cUsuario.updatePerfil);
 router.get('/usuario/getProfesionales', cUsuario.getProfesionales);
+router.get('/usuario/getProfesionales10', cUsuario.getProfesionales10);
 router.get('/usuario/getProfesional', cUsuario.getProfesional);
 router.get('/usuario/getReputacion', cUsuario.getReputacion);
 
@@ -56,6 +59,8 @@ router.put('/notificacion/setLeido', cNotificacion.setLeido);
 router.get('/chat/getChat', cChat.getChat);
 router.get('/chat/getChats', cChat.getChats);
 router.post('/chat/nuevoMensaje', cChat.nuevoMensaje);
+
+router.get('/contacto/getContactos', cContacto.getContactos);
 
 router.post('/firebase/prueba', (req, res) => {
     const token = req.body.token;
