@@ -120,8 +120,10 @@ exports.getAnunciosPublicados = (req, res) => {
     console.log('');
 
     const usuarioId = (req.query.usuarioId || '').trim();
+    const query = (req.query.query || '').trim();
+
     console.log("usuarioId", usuarioId);
-    //TODO validaciones
+    console.log("query", query);
 
     db.query('call anuncioGetAnunciosPublicados(?)', usuarioId, (error, results) => {
         if (error) {
@@ -140,6 +142,9 @@ exports.getAnuncioPublicado = (req, res) => {
     console.log('');
 
     const anuncioId = (req.query.anuncioId || '').trim();
+
+    // En caso de estar aceptado busco el profesional aceptado
+    let profesionalId;
 
     //TODO validaciones
 
@@ -174,7 +179,8 @@ exports.getAnuncioPublicado = (req, res) => {
 						dsc: r1[0][0].dsc,
 						profesiones: []
 		        	},
-		            propuestas: []
+		            propuestas: [],
+                    contactos: []
 		        };
 		        
 		        if (r2[0] != null) {
@@ -188,14 +194,13 @@ exports.getAnuncioPublicado = (req, res) => {
 		                    profesional: {
 		                        id: r2[0][i].profesionalId,
 		                        username: r2[0][i].username,
-		                        foto: r2[0][i].foto,
-		                        telefono: r2[0][i].telefono,
-		                        email: r2[0][i].email,
-		                        whatsapp: r2[0][i].whatsapp,
-		                        instagram: r2[0][i].instagram,
-		                        facebook: r2[0][i].facebook,
+		                        foto: r2[0][i].foto
 		                    }
 		                }
+
+		                if (r2[0][i].isAceptado === 1) {
+		                    profesionalId = r2[0][i].profesionalId;
+                        }
 		            }
 		        }
 		        
@@ -208,8 +213,32 @@ exports.getAnuncioPublicado = (req, res) => {
 		        	}
 		        }
 
-		        console.log('res', response);
-		        return res.status(200).json(response);
+                if (r1[0][0].estadoId === 2 || r1[0][0].estadoId === 3) {
+
+                    db.query('call usuarioGetContactos(?)', profesionalId, (e4, r4) => {
+                        if (e4) {
+                            console.log(e4);
+                            return res.status(400).json(false);
+                        }
+                        console.log('contactos', r4[0]);
+                        if (r4[0] != null) {
+                            for (let i = 0; i < r4[0].length; i++) {
+                                response.contactos[i] = {
+                                    id: r4[0][i].id,
+                                    dsc: r4[0][i].dsc,
+                                    valor: r4[0][i].valor
+                                }
+                            }
+                        }
+
+                        console.log('res', response);
+                        return res.status(200).json(response);
+                    });
+
+                } else {
+                    console.log('res', response);
+                    return res.status(200).json(response);
+                }
             });
         });
     });
