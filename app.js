@@ -30,11 +30,18 @@ router.post('/usuario/registro', cUsuario.registro);
 router.post('/usuario/login', cUsuario.login);
 router.get('/usuario/getPerfil', cUsuario.getPerfil);
 router.put('/usuario/updateDatosPersonales', cUsuario.updateDatosPersonales);
+router.put('/usuario/updatePerfilProfesional', cUsuario.updatePerfilProfesional);
+router.put('/usuario/baja', cUsuario.baja);
+router.put('/usuario/cambiarPwd', cUsuario.cambiarPwd);
+router.post('/usuario/actualizarFoto', uploader.single('foto'), cUsuario.actualizarFoto);
+router.put('/usuario/eliminarFoto', cUsuario.eliminarFoto);
+
 router.put('/usuario/updatePerfil', uploader.single('foto'), cUsuario.updatePerfil);
 router.get('/usuario/getProfesionales', cUsuario.getProfesionales);
 router.get('/usuario/getProfesionales10', cUsuario.getProfesionales10);
 router.get('/usuario/getProfesional', cUsuario.getProfesional);
 router.get('/usuario/getReputacion', cUsuario.getReputacion);
+
 
 router.get('/anuncio/getAnuncios', cAnuncio.getAnuncios);
 router.get('/anuncio/getAnuncio', cAnuncio.getAnuncio);

@@ -132,10 +132,23 @@ exports.getPerfil = (req, res) => {
 
                     for (let i = 0; i < r4[0].length; i++) {
                         etiquetas[i] = {
-                            id: r4[0][i].id,
                             dsc: r4[0][i].dsc
                         }
                     }
+
+                    console.log('res', {
+                        id: usuarioId,
+                        apellido: r1[0][0].apellido,
+                        nombre: r1[0][0].nombre,
+                        email: r1[0][0].email,
+                        foto: r1[0][0].foto,
+                        isProfesional: r1[0][0].isProfesional === 1,
+                        dni: r1[0][0].dni,
+                        acercaDeMi: r1[0][0].acercaDeMi || '',
+                        profesiones: profesiones,
+                        contactos: contactos,
+                        etiquetas: etiquetas
+                    });
 
                     res.status(200).json({
                         id: usuarioId,
@@ -191,6 +204,140 @@ exports.updateDatosPersonales = (req, res) => {
     });
 };
 
+exports.updatePerfilProfesional = (req, res) => {
+    console.log('');
+    console.log("------- Usuario.updatePerfilProfesional --------");
+    console.log('');
+
+    let id = (req.body.id || '').trim();
+    let tags = (req.body.tags || '').trim();
+    let profesiones = (req.body.profesiones || '').trim();
+    let contactos = (req.body.contactos || '').trim();
+    let isProfesional = (req.body.isProfesional || '').trim();
+    let dni = (req.body.dni || '').trim();
+    let acercaDeMi = (req.body.acercaDeMi || '').trim();
+    let patronBusqueda = (req.body.patronBusqueda || '').trim();
+    isProfesional = isProfesional === 'true';
+    console.log(id);
+    console.log(tags);
+    console.log(profesiones);
+    console.log(contactos);
+    console.log(isProfesional);
+    console.log(dni);
+    console.log(acercaDeMi);
+    console.log(patronBusqueda);
+
+    db.query('call usuarioUpdatePerfilProfesional(?, ?, ?, ?, ?, ?, ?, ?)', [id, tags, profesiones, contactos, isProfesional, dni, acercaDeMi, patronBusqueda], (e1, r1) => {
+        if (e1 != null) {
+            console.log('e1', e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0][0].ok);
+
+        res.status(200).json({
+            ok: r1[0][0].ok
+        });
+    });
+};
+
+exports.baja = (req, res) => {
+    console.log('');
+    console.log("------- Usuario.baja --------");
+    console.log('');
+
+    const id = (req.body.id || '').trim();
+
+    db.query('call usuarioBaja(?)', id, (e1, r1) => {
+        if (e1 != null) {
+            console.log('e1', e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0][0].ok);
+
+        res.status(200).json({
+            ok: r1[0][0].ok
+        });
+    });
+};
+
+exports.cambiarPwd = (req, res) => {
+    console.log('');
+    console.log("------- Usuario.cambiarPwd --------");
+    console.log('');
+
+    const id = (req.body.id || '').trim();
+    const pwdActual = (req.body.pwdActual || '').trim();
+    const pwdNuevo = (req.body.pwdNuevo || '').trim();
+
+    db.query('call usuarioCambiarPwd(?, ?, ?)', [id, pwdActual, pwdNuevo], (e1, r1) => {
+        if (e1 != null) {
+            console.log('e1', e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0][0].ok);
+
+        res.status(200).json({
+            ok: r1[0][0].ok
+        });
+    });
+};
+
+exports.actualizarFoto = (req, res) => {
+    console.log('');
+    console.log("------- Usuario.actualizarFoto --------");
+    console.log('');
+
+    let id = (req.body.id || '').trim();
+
+    const fs = require('fs');
+    const file = req.file;
+
+    let foto = null;
+
+    if (file.size > 0) {
+        foto = new Buffer(fs.readFileSync(file.path));
+    }
+
+    console.log(id);
+    console.log(file);
+
+    db.query('call usuarioActualizarFoto(?, ?)', [id, file.filename], (e1, r1) => {
+        if (e1 != null) {
+            console.log('e1', e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0][0].ok);
+
+        res.status(200).jsonp({
+            ok: r1[0][0].ok
+        });
+    });
+};
+
+exports.eliminarFoto = (req, res) => {
+    console.log('');
+    console.log("------- Usuario.eliminarFoto --------");
+    console.log('');
+
+    const id = (req.body.id || '').trim();
+
+    db.query('call usuarioActualizarFoto(?, null)', id, (e1, r1) => {
+        if (e1 != null) {
+            console.log('e1', e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0][0].ok);
+
+        res.status(200).json({
+            ok: r1[0][0].ok
+        });
+    });
+};
 exports.updatePerfil = (req, res) => {
     console.log('');
     console.log("------- Usuario.updatePerfil --------");
