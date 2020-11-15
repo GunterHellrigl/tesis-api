@@ -38,7 +38,7 @@ router.put('/usuario/eliminarFoto', cUsuario.eliminarFoto);
 
 router.put('/usuario/updatePerfil', uploader.single('foto'), cUsuario.updatePerfil);
 router.get('/usuario/getProfesionales', cUsuario.getProfesionales);
-router.get('/usuario/getProfesionales10', cUsuario.getProfesionales10);
+router.get('/usuario/getProfesionalesCount', cUsuario.getProfesionalesCount);
 router.get('/usuario/getProfesional', cUsuario.getProfesional);
 router.get('/usuario/getReputacion', cUsuario.getReputacion);
 

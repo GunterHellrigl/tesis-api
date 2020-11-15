@@ -138,10 +138,12 @@ exports.getPerfil = (req, res) => {
 
                     console.log('res', {
                         id: usuarioId,
+                        username: r1[0][0].username,
                         apellido: r1[0][0].apellido,
                         nombre: r1[0][0].nombre,
                         email: r1[0][0].email,
                         foto: r1[0][0].foto,
+                        reputacion: r1[0][0].reputacion,
                         isProfesional: r1[0][0].isProfesional === 1,
                         dni: r1[0][0].dni,
                         acercaDeMi: r1[0][0].acercaDeMi || '',
@@ -152,10 +154,12 @@ exports.getPerfil = (req, res) => {
 
                     res.status(200).json({
                         id: usuarioId,
+                        username: r1[0][0].username,
                         apellido: r1[0][0].apellido,
                         nombre: r1[0][0].nombre,
                         email: r1[0][0].email,
                         foto: r1[0][0].foto,
+                        reputacion: r1[0][0].reputacion,
                         isProfesional: r1[0][0].isProfesional === 1,
                         dni: r1[0][0].dni,
                         acercaDeMi: r1[0][0].acercaDeMi || '',
@@ -338,6 +342,7 @@ exports.eliminarFoto = (req, res) => {
         });
     });
 };
+
 exports.updatePerfil = (req, res) => {
     console.log('');
     console.log("------- Usuario.updatePerfil --------");
@@ -398,14 +403,15 @@ exports.getProfesionales = (req, res) => {
 
     const query = (req.query.query || '').trim();
     const usuarioId = (req.query.usuarioId || '').trim();
+    const pageDesde = (req.query.pageDesde || '').trim();
+    const pageHasta = (req.query.pageHasta || '').trim();
 
     console.log('query:', query);
     console.log('usuarioId:', usuarioId);
+    console.log('pageDesde:', pageDesde);
+    console.log('pageHasta:', pageHasta);
 
-    // if (v.isEmpty(usuarioId)) return res.status(400).json(false);
-    // if (!v.isInt(usuarioId, {min: 1})) return res.status(400).json(false);
-
-    db.query('call usuarioGetProfesionales(?, ?)', [query, usuarioId], function (error, results) {
+    db.query('call usuarioGetProfesionales(?, ?, ?, ?)', [query, usuarioId, pageDesde, pageHasta], function (error, results) {
         if (error != null) {
             console.log("Error:", error);
             return res.status(400).json(false);
@@ -421,7 +427,7 @@ exports.getProfesionales = (req, res) => {
                 nombre: results[0][i].nombre,
                 reputacion: results[0][i].reputacion,
                 foto: results[0][i].foto,
-                profesionesString: results[0][i].profesiones
+                patronBusqueda: results[0][i].patronBusqueda
             }
         }
         console.log(usuarios);
@@ -429,9 +435,9 @@ exports.getProfesionales = (req, res) => {
     });
 };
 
-exports.getProfesionales10 = (req, res) => {
+exports.getProfesionalesCount = (req, res) => {
     console.log('');
-    console.log("------- Usuario.getProfesionales10 --------");
+    console.log("------- Usuario.getProfesionalesCount --------");
     console.log('');
 
     const query = (req.query.query || '').trim();
@@ -440,30 +446,14 @@ exports.getProfesionales10 = (req, res) => {
     console.log('query:', query);
     console.log('usuarioId:', usuarioId);
 
-    // if (v.isEmpty(usuarioId)) return res.status(400).json(false);
-    // if (!v.isInt(usuarioId, {min: 1})) return res.status(400).json(false);
-
-    db.query('call usuarioGetProfesionales10(?, ?)', [query, usuarioId], function (error, results) {
-        if (error != null) {
-            console.log("Error:", error);
+    db.query('call usuarioGetProfesionalesCount(?, ?)', [query, usuarioId], function (e1, r1) {
+        if (e1 != null) {
+            console.log("e1:", e1);
             return res.status(400).json(false);
         }
 
-        let usuarios = [];
-
-        for (let i = 0; i < results[0].length; i++) {
-            usuarios[i] = {
-                id: results[0][i].id,
-                username: results[0][i].username,
-                apellido: results[0][i].apellido,
-                nombre: results[0][i].nombre,
-                reputacion: results[0][i].reputacion,
-                foto: results[0][i].foto,
-                profesionesString: results[0][i].profesiones
-            }
-        }
-        console.log(usuarios);
-        return res.status(200).send(usuarios);
+        console.log('count', r1[0][0].cantidad);
+        return res.status(200).json(r1[0][0].cantidad);
     });
 };
 
@@ -490,7 +480,7 @@ exports.getProfesional = (req, res) => {
             reputacion: results[0][0].reputacion,
             foto: results[0][0].foto,
             acercaDeMi: results[0][0].acercaDeMi,
-            profesionesString: results[0][0].profesiones
+            patronBusqueda: results[0][0].patronBusqueda
         });
     });
 };
