@@ -389,6 +389,55 @@ exports.eliminarAnuncio = (req, res) => {
     });
 };
 
+
+exports.getTrabajos = (req, res) => {
+    console.log('');
+    console.log("------- Anuncio.getTrabajos --------");
+    console.log('');
+
+    const usuarioId = (req.query.usuarioId || '').trim();
+    const query = (req.query.query || '').trim();
+    const pageDesde = (req.query.pageDesde || '').trim();
+    const pageHasta = (req.query.pageHasta || '').trim();
+
+    console.log("usuarioId", usuarioId);
+    console.log("query", query);
+    console.log('pageDesde:', pageDesde);
+    console.log('pageHasta:', pageHasta);
+
+    db.query('call anuncioGetTrabajos(?, ?, ?, ?)', [query, usuarioId, pageDesde, pageHasta], (e1, r1) => {
+        if (e1) {
+            console.log(e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('res', r1[0]);
+        res.status(200).json((r1[0] == null) ? [] : r1[0]);
+    });
+};
+
+exports.getTrabajosCount = (req, res) => {
+    console.log('');
+    console.log("------- Anuncio.getTrabajosCount --------");
+    console.log('');
+
+    const query = (req.query.query || '').trim();
+    const usuarioId = (req.query.usuarioId || '').trim();
+
+    console.log('query:', query);
+    console.log('usuarioId:', usuarioId);
+
+    db.query('call anuncioGetTrabajosCount(?, ?)', [query, usuarioId], function (e1, r1) {
+        if (e1 != null) {
+            console.log("e1:", e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('count', r1[0][0].cantidad);
+        return res.status(200).json(r1[0][0].cantidad);
+    });
+};
+
 exports.getTrabajosPendientes = (req, res) => {
     console.log('');
     console.log("------- Anuncio.getTrabajosPendientes --------");

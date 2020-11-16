@@ -55,6 +55,8 @@ router.post('/anuncio/publicarAnuncio', cAnuncio.publicarAnuncio);
 router.put('/anuncio/editarAnuncio', cAnuncio.editarAnuncio);
 router.put('/anuncio/eliminarAnuncio', cAnuncio.eliminarAnuncio);
 
+router.get('/anuncio/getTrabajos', cAnuncio.getTrabajos);
+router.get('/anuncio/getTrabajosCount', cAnuncio.getTrabajosCount);
 router.get('/anuncio/getTrabajosPendientes', cAnuncio.getTrabajosPendientes);
 router.get('/anuncio/getTrabajosFinalizados', cAnuncio.getTrabajosFinalizados);
 
