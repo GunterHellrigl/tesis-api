@@ -56,38 +56,38 @@ exports.enviarPropuesta = (req, res) => {
 
         res.status(200).json(r1[0][0].id);
 
-        db.query('call getDataFromAnuncioToNotify(?, ?)', [anuncioId, profesionalId], (e2, r2) => {
-            if (e2) {
-                console.log("Error", e2);
-                return;
-            }
-
-            const token = r2[0][0].token || '';
-            const anuncioTitulo = r2[0][0].titulo || '';
-            const profesionalUsername = r2[0][0].username || '';
-
-            const payload = {
-                data: {
-                    action: 'notification',
-                    tipo: '1',
-                    drawable: 'ic_work',
-                    title: anuncioTitulo,
-                    contentText: "@" + profesionalUsername + " te ha enviado una propuesta"
-                }
-            };
-            const options = {
-                priority: "high",
-                timeToLive: 60 * 60 * 24
-            };
-
-            fcm.messaging().sendToDevice(token, payload, options)
-                .then(response => {
-                    console.log('Action executed');
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        });
+        // db.query('call getDataFromAnuncioToNotify(?, ?)', [anuncioId, profesionalId], (e2, r2) => {
+        //     if (e2) {
+        //         console.log("Error", e2);
+        //         return;
+        //     }
+        //
+        //     const token = r2[0][0].token || '';
+        //     const anuncioTitulo = r2[0][0].titulo || '';
+        //     const profesionalUsername = r2[0][0].username || '';
+        //
+        //     const payload = {
+        //         data: {
+        //             action: 'notification',
+        //             tipo: '1',
+        //             drawable: 'ic_work',
+        //             title: anuncioTitulo,
+        //             contentText: "@" + profesionalUsername + " te ha enviado una propuesta"
+        //         }
+        //     };
+        //     const options = {
+        //         priority: "high",
+        //         timeToLive: 60 * 60 * 24
+        //     };
+        //
+        //     fcm.messaging().sendToDevice(token, payload, options)
+        //         .then(response => {
+        //             console.log('Action executed');
+        //         })
+        //         .catch(error => {
+        //             console.log(error);
+        //         });
+        // });
     });
 };
 

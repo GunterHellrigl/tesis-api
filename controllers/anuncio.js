@@ -9,16 +9,20 @@ exports.getAnuncios = (req, res) => {
     const usuarioId = (req.query.usuarioId || '').trim();
     let precioDesde = (req.query.precioDesde || '').trim()
     let precioHasta = (req.query.precioHasta || '').trim()
+    const pageDesde = (req.query.pageDesde || '').trim();
+    const pageHasta = (req.query.pageHasta || '').trim();
 
     console.log(query);
     console.log(usuarioId);
     console.log(precioDesde);
     console.log(precioHasta);
+    console.log('pageDesde:', pageDesde);
+    console.log('pageHasta:', pageHasta);
 
     if (precioDesde === '') precioDesde = null;
     if (precioHasta === '') precioHasta = null;
 
-    db.query('call anuncioGetAnuncios(?, ?, ?, ?)', [query, usuarioId, precioDesde, precioHasta], (error, results) => {
+    db.query('call anuncioGetAnuncios(?, ?, ?, ?, ?, ?)', [query, usuarioId, precioDesde, precioHasta, pageDesde, pageHasta], (error, results) => {
         if (error) {
             console.log(error);
             return res.status(400);
@@ -26,6 +30,35 @@ exports.getAnuncios = (req, res) => {
 
         console.log('res', results[0]);
         return res.status(200).send(results[0]);
+    });
+};
+
+exports.getAnunciosCount = (req, res) => {
+    console.log('');
+    console.log("------- Anuncio.getAnunciosCount --------");
+    console.log('');
+
+    const query = (req.query.query || '').trim();
+    const usuarioId = (req.query.usuarioId || '').trim();
+    let precioDesde = (req.query.precioDesde || '').trim()
+    let precioHasta = (req.query.precioHasta || '').trim()
+
+    console.log('query:', query);
+    console.log('usuarioId:', usuarioId);
+    console.log(precioDesde);
+    console.log(precioHasta);
+
+    if (precioDesde === '') precioDesde = null;
+    if (precioHasta === '') precioHasta = null;
+
+    db.query('call anuncioGetAnunciosCount(?, ?, ?, ?)', [query, usuarioId, precioDesde, precioHasta], function (e1, r1) {
+        if (e1 != null) {
+            console.log("e1:", e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('count', r1[0][0].cantidad);
+        return res.status(200).json(r1[0][0].cantidad);
     });
 };
 
@@ -121,18 +154,44 @@ exports.getAnunciosPublicados = (req, res) => {
 
     const usuarioId = (req.query.usuarioId || '').trim();
     const query = (req.query.query || '').trim();
+    const pageDesde = (req.query.pageDesde || '').trim();
+    const pageHasta = (req.query.pageHasta || '').trim();
 
     console.log("usuarioId", usuarioId);
     console.log("query", query);
+    console.log('pageDesde:', pageDesde);
+    console.log('pageHasta:', pageHasta);
 
-    db.query('call anuncioGetAnunciosPublicados(?)', usuarioId, (error, results) => {
-        if (error) {
-            console.log(error);
+    db.query('call anuncioGetAnunciosPublicados(?, ?, ?, ?)', [query, usuarioId, pageDesde, pageHasta], (e1, r1) => {
+        if (e1) {
+            console.log(e1);
             return res.status(400).json(false);
         }
 
-        console.log('res', results[0]);
-        res.status(200).json((results[0] == null) ? [] : results[0]);
+        console.log('res', r1[0]);
+        res.status(200).json((r1[0] == null) ? [] : r1[0]);
+    });
+};
+
+exports.getAnunciosPublicadosCount = (req, res) => {
+    console.log('');
+    console.log("------- Anuncio.getAnunciosPublicadosCount --------");
+    console.log('');
+
+    const query = (req.query.query || '').trim();
+    const usuarioId = (req.query.usuarioId || '').trim();
+
+    console.log('query:', query);
+    console.log('usuarioId:', usuarioId);
+
+    db.query('call anuncioGetAnunciosPublicadosCount(?, ?)', [query, usuarioId], function (e1, r1) {
+        if (e1 != null) {
+            console.log("e1:", e1);
+            return res.status(400).json(false);
+        }
+
+        console.log('count', r1[0][0].cantidad);
+        return res.status(200).json(r1[0][0].cantidad);
     });
 };
 

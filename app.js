@@ -44,16 +44,23 @@ router.get('/usuario/getReputacion', cUsuario.getReputacion);
 
 
 router.get('/anuncio/getAnuncios', cAnuncio.getAnuncios);
+router.get('/anuncio/getAnunciosCount', cAnuncio.getAnunciosCount);
 router.get('/anuncio/getAnuncio', cAnuncio.getAnuncio);
+
 router.get('/anuncio/getAnunciosPublicados', cAnuncio.getAnunciosPublicados);
+router.get('/anuncio/getAnunciosPublicadosCount', cAnuncio.getAnunciosPublicadosCount);
 router.get('/anuncio/getAnuncioPublicado', cAnuncio.getAnuncioPublicado);
+
 router.post('/anuncio/publicarAnuncio', cAnuncio.publicarAnuncio);
 router.put('/anuncio/editarAnuncio', cAnuncio.editarAnuncio);
 router.put('/anuncio/eliminarAnuncio', cAnuncio.eliminarAnuncio);
+
 router.get('/anuncio/getTrabajosPendientes', cAnuncio.getTrabajosPendientes);
 router.get('/anuncio/getTrabajosFinalizados', cAnuncio.getTrabajosFinalizados);
+
 router.post('/anuncio/calificarUsuario', cAnuncio.calificarUsuario);
 router.post('/anuncio/calificarProfesional', cAnuncio.calificarProfesional);
+
 
 router.get('/propuesta/getPropuestasEnviadas', cPropuesta.getPropuestasEnviadas);
 router.post('/propuesta/enviarPropuesta', cPropuesta.enviarPropuesta);
