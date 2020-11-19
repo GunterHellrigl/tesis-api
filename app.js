@@ -74,6 +74,7 @@ router.put('/notificacion/setLeido', cNotificacion.setLeido);
 
 router.get('/chat/getChat', cChat.getChat);
 router.get('/chat/getChats', cChat.getChats);
+router.get('/chat/getMensajes', cChat.getMensajes);
 router.post('/chat/nuevoMensaje', cChat.nuevoMensaje);
 
 router.get('/contacto/getContactos', cContacto.getContactos);
